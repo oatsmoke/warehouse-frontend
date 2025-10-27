@@ -1,0 +1,21 @@
+<table [dataSource]="items" mat-table>
+  @for (column of columns; track column) {
+    <ng-container [matColumnDef]="column.column_def">
+      <th *matHeaderCellDef mat-header-cell>
+        <h3>{{ column.header }}</h3>
+      </th>
+      <td *matCellDef="let cell" mat-cell>
+        {{ column.cell(cell) }}
+      </td>
+    </ng-container>
+  }
+  <ng-container matColumnDef="options">
+    <th *matHeaderCellDef class="options" mat-header-cell>
+    </th>
+    <td *matCellDef="let cell" mat-cell>
+      <app-menu-option [id]="cell.id" [items]="options"/>
+    </td>
+  </ng-container>
+  <tr *matHeaderRowDef="displayedColumns; sticky:true" class="mat-header-row" mat-header-row></tr>
+  <tr *matRowDef="let row; columns:displayedColumns" class="tr-hover" mat-row></tr>
+</table>

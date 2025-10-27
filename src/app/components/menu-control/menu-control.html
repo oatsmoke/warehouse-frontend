@@ -1,0 +1,11 @@
+<button [matMenuTriggerFor]="menu" class="main-button" matButton="elevated">
+  <mat-icon>keyboard_arrow_down</mat-icon>
+  {{ control() }}
+</button>
+<mat-menu #menu="matMenu">
+  @for (item of items; track item) {
+    <button [disabled]="item.id==id" [routerLink]="['/control', param, item.id]" mat-menu-item>
+      {{ item.title }}
+    </button>
+  }
+</mat-menu>

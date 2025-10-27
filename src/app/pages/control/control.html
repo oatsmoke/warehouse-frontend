@@ -1,0 +1,8 @@
+@switch (id) {
+  @case ("category") {
+    <app-table [columns]="categoryColumns" [items]="categoryItems" [options]="categoryOption"/>
+  }
+  @case ("profile") {
+    <app-table [columns]="profileColumns" [items]="profileItems" [options]="profileOption"/>
+  }
+}

@@ -1,0 +1,30 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side">
+    <h2 class="logo">WareHouse</h2>
+    <app-menu-left [id]="id" [param]="param" [url]="url"/>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button (click)="sidenav.toggle()" matButton="elevated">
+        <mat-icon>menu</mat-icon>
+        {{ title() }}
+      </button>
+      @switch (toolBar) {
+        @case ("equipment") {
+          @if (param == "department") {
+            <app-toolbar-department [id]="id" [param]="param" [url]="url" class="app-toolbar"/>
+          }
+          @if (param == "contract") {
+            <app-toolbar-contract class="app-toolbar"/>
+          }
+        }
+        @case ("control") {
+          <app-toolbar-control [id]="id" [param]="param" [url]="url" class="app-toolbar"/>
+        }
+      }
+    </mat-toolbar>
+    <div class="content">
+      <router-outlet/>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

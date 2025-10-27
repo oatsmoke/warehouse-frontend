@@ -1,0 +1,14 @@
+.main-menu {
+  margin-top: 50px;
+}
+
+.menu-button {
+  margin: 10px 20px 0 20px;
+  font-weight: bold;
+  width: 160px;
+  justify-content: flex-start;
+}
+
+.active{
+  background: #ffb787;
+}

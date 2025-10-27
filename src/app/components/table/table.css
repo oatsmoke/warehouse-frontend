@@ -1,0 +1,22 @@
+table {
+  min-width: 800px;
+  margin: auto;
+  box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.2);
+  padding-bottom: 10px;
+  border-radius: 0 0 10px 10px;
+}
+
+.tr-hover:hover {
+  background-color: #f7ebe3;
+  /*ffdcc7*/
+}
+
+.mat-header-row {
+  position: sticky;
+  top: 64px;
+}
+
+.options {
+  width: 50px;
+}
+

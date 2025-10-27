@@ -1,0 +1,10 @@
+<nav class="main-menu">
+  @for (item of items; track item) {
+    <button [routerLink]="item.param?[item.link, item.param , localstorage.getItem(item.param)]:[item.link]"
+            class="menu-button" matButton
+            routerLinkActive="active">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      {{ item.text }}
+    </button>
+  }
+</nav>
