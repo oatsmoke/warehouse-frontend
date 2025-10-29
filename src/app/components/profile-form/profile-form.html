@@ -1,6 +1,6 @@
 <mat-card appearance="raised">
   <mat-card-header>
-    <mat-card-title>Новая категория</mat-card-title>
+    <mat-card-title>Новый профиль</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
@@ -19,6 +19,19 @@
           }
           @if (title.hasError('maxlength')) {
             <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Категория</mat-label>
+          <mat-select [formControl]="category">
+            @for (item of categoryItems; track item) {
+              <mat-option [value]="item.id">{{ item.title }}</mat-option>
+            }
+          </mat-select>
+          @if (category.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
           }
         </mat-form-field>
       </p>

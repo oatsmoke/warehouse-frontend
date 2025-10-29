@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CategoryType} from './administration-category';
+import {CategoryType} from './category';
 import {TableColumnsType} from '../components/table/table';
 
 export interface ProfileType {
@@ -64,7 +64,7 @@ export const ProfileData: ProfileType[] = [
   providedIn: 'root'
 })
 
-export class AdministrationProfileService {
+export class ProfileService {
   details(id: number) {
     console.log('Подробнее о профиле', id)
   }
@@ -75,5 +75,9 @@ export class AdministrationProfileService {
 
   delete(id: number) {
     console.log('Удалить профиль', id)
+  }
+
+  create(item: ProfileType) {
+    console.log(item)
   }
 }

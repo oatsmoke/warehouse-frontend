@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 
 export interface MenuControlType {
   id: string;
@@ -37,4 +37,9 @@ export const MenuControlData: MenuControlType[] = [
 })
 
 export class MenuControlService {
+  add: WritableSignal<boolean> = signal(false)
+
+  toggleAdd() {
+    this.add.set(!this.add())
+  }
 }

@@ -2,7 +2,7 @@ import {Component, Input, signal} from '@angular/core';
 import {MenuControl} from '../menu-control/menu-control';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {AdministrationCategoryService} from '../../services/administration-category';
+import {MenuControlService} from '../../services/menu-control';
 
 @Component({
   selector: 'app-toolbar-control',
@@ -22,11 +22,11 @@ export class ToolbarControl {
 
   add = signal(false)
 
-  constructor(private administrationCategoryService: AdministrationCategoryService) {
-    this.add = this.administrationCategoryService.add
+  constructor(private menuControlService: MenuControlService) {
+    this.add = this.menuControlService.add
   }
 
   addCard() {
-    this.administrationCategoryService.toggleAdd()
+    this.menuControlService.toggleAdd()
   }
 }

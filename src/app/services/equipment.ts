@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ProfileType} from './administration-profile';
+import {ProfileType} from './profile';
 import {TableColumnsType} from '../components/table/table';
 
 export interface EquipmentType {
