@@ -1,14 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {Table} from '../../components/table/table';
 import {ActivatedRoute} from '@angular/router';
 import {AdministrationCategoryService, CategoryColumnsData, CategoryData} from '../../services/administration-category';
 import {AdministrationProfileService, ProfileColumnsData, ProfileData} from '../../services/administration-profile';
 import {MenuOptionType} from '../../components/menu-option/menu-option';
+import {CategoryForm} from '../../components/category-form/category-form';
 
 @Component({
   selector: 'app-control',
   imports: [
-    Table
+    Table,
+    CategoryForm,
   ],
   templateUrl: './control.html',
   styleUrl: './control.css'
@@ -16,6 +18,7 @@ import {MenuOptionType} from '../../components/menu-option/menu-option';
 
 export class Control {
   id!: string
+  add = signal(false)
 
   categoryColumns = CategoryColumnsData
   categoryItems = CategoryData
@@ -57,5 +60,6 @@ export class Control {
     this.route.paramMap.subscribe(param => {
       this.id = param.get('id') || ""
     })
+    this.add = this.administrationCategoryService.add
   }
 }

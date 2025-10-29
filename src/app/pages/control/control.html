@@ -1,8 +1,13 @@
-@switch (id) {
-  @case ("category") {
-    <app-table [columns]="categoryColumns" [items]="categoryItems" [options]="categoryOption"/>
+<div class="container">
+  @switch (id) {
+    @case ("category") {
+      <app-table [columns]="categoryColumns" [items]="categoryItems" [options]="categoryOption"/>
+      @if (add()) {
+        <app-category-form/>
+      }
+    }
+    @case ("profile") {
+      <app-table [columns]="profileColumns" [items]="profileItems" [options]="profileOption"/>
+    }
   }
-  @case ("profile") {
-    <app-table [columns]="profileColumns" [items]="profileItems" [options]="profileOption"/>
-  }
-}
+</div>

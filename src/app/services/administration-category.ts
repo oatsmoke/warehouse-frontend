@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {TableColumnsType} from '../components/table/table';
 
 export interface CategoryType {
@@ -43,6 +43,8 @@ export const CategoryData: CategoryType[] = [
 })
 
 export class AdministrationCategoryService {
+  add: WritableSignal<boolean> = signal(false)
+
   details(id: number) {
     console.log('Подробнее о категории', id)
   }
@@ -53,5 +55,13 @@ export class AdministrationCategoryService {
 
   delete(id: number) {
     console.log('Удалить категорию', id)
+  }
+
+  toggleAdd() {
+    this.add.set(!this.add())
+  }
+
+  create(item: CategoryType) {
+    console.log(item)
   }
 }
