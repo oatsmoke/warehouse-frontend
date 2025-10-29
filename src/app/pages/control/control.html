@@ -12,5 +12,17 @@
         <app-profile-form/>
       }
     }
+    @case ("company") {
+      <app-table [columns]="companyColumns" [items]="companyItems" [options]="companyOption"/>
+      @if (add()) {
+        <app-company-form/>
+      }
+    }
+    @case ("department") {
+      <app-table [columns]="departmentColumns" [items]="departmentItems" [options]="departmentOption"/>
+      @if (add()) {
+        <app-department-form/>
+      }
+    }
   }
 </div>

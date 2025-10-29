@@ -1,0 +1,30 @@
+<mat-card appearance="raised">
+  <mat-card-header>
+    <mat-card-title>Новый отдел</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Название</mat-label>
+          <input [formControl]="title" matInput>
+          @if (title.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+          @if (title.hasError('pattern')) {
+            <mat-error>Недопустимые символы!</mat-error>
+          }
+          @if (title.hasError('minlength')) {
+            <mat-error>Минимум 3 символа!</mat-error>
+          }
+          @if (title.hasError('maxlength')) {
+            <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <button [disabled]="form.invalid" matButton="tonal" type="submit">OK</button>
+      </p>
+    </form>
+  </mat-card-actions>
+</mat-card>
