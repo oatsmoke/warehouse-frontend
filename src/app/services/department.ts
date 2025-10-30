@@ -20,7 +20,7 @@ export const DepartmentColumnsData: TableColumnsType[] = [
   }
 ]
 
-export const DepartmentData: DepartmentType[] = [
+const DepartmentData: DepartmentType[] = [
   {
     id: 1,
     title: "1 участок",
@@ -43,19 +43,27 @@ export const DepartmentData: DepartmentType[] = [
 })
 
 export class DepartmentService {
-  details(id: number) {
-    console.log('Подробнее об отделе', id)
+  create(item: DepartmentType) {
+    console.log("создать", item)
+  }
+
+  read(id: number) {
+    console.log('получить', id)
   }
 
   update(id: number) {
-    console.log('Редактировать отдел', id)
+    console.log('изменить', id)
   }
 
   delete(id: number) {
-    console.log('Удалить отдел', id)
+    console.log('удалить', id)
   }
 
-  create(item: DepartmentType) {
-    console.log(item)
+  restore(id: number) {
+    console.log('восстановить', id)
+  }
+
+  list(): DepartmentType[] {
+    return DepartmentData
   }
 }

@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ProfileService} from '../../services/profile';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {CategoryData} from '../../services/category';
+import {CategoryType} from '../../services/category';
+import {ProfileService} from '../../services/profile';
 
 @Component({
-  selector: 'app-profile-form',
+  selector: 'app-form-profile',
   imports: [
     MatCardModule,
     ReactiveFormsModule,
@@ -18,11 +18,12 @@ import {CategoryData} from '../../services/category';
     MatInputModule,
     MatSelectModule,
   ],
-  templateUrl: './profile-form.html',
-  styleUrl: './profile-form.css'
+  templateUrl: './form-profile.html',
+  styleUrl: './form-profile.css'
 })
-export class ProfileForm {
-  categoryItems = CategoryData
+
+export class FormProfile {
+  categoryItems: CategoryType[] = []
   form: FormGroup
   title = new FormControl("", [
     Validators.required,

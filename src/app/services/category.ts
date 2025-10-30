@@ -20,7 +20,7 @@ export const CategoryColumnsData: TableColumnsType[] = [
   }
 ]
 
-export const CategoryData: CategoryType[] = [
+const CategoryData: CategoryType[] = [
   {
     id: 1,
     title: "router",
@@ -43,19 +43,27 @@ export const CategoryData: CategoryType[] = [
 })
 
 export class CategoryService {
-  details(id: number) {
-    console.log('Подробнее о категории', id)
+  create(item: CategoryType) {
+    console.log("создать", item)
+  }
+
+  read(id: number) {
+    console.log('получить', id)
   }
 
   update(id: number) {
-    console.log('Редактировать категорию', id)
+    console.log('изменить', id)
   }
 
   delete(id: number) {
-    console.log('Удалить категорию', id)
+    console.log('удалить', id)
   }
 
-  create(item: CategoryType) {
-    console.log(item)
+  restore(id: number) {
+    console.log('восстановить', id)
+  }
+
+  list(): CategoryType[] {
+    return CategoryData
   }
 }

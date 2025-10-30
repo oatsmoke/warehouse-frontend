@@ -1,0 +1,8 @@
+<div class="container">
+  @if (categoryItems.length > 0) {
+    <app-table [columns]="categoryColumns" [items]="categoryItems" [options]="categoryOption"/>
+  }
+  @if (add()) {
+    <app-form-category/>
+  }
+</div>

@@ -1,28 +1,14 @@
-<div class="container">
-  @switch (id) {
-    @case ("category") {
-      <app-table [columns]="categoryColumns" [items]="categoryItems" [options]="categoryOption"/>
-      @if (add()) {
-        <app-category-form/>
-      }
-    }
-    @case ("profile") {
-      <app-table [columns]="profileColumns" [items]="profileItems" [options]="profileOption"/>
-      @if (add()) {
-        <app-profile-form/>
-      }
-    }
-    @case ("company") {
-      <app-table [columns]="companyColumns" [items]="companyItems" [options]="companyOption"/>
-      @if (add()) {
-        <app-company-form/>
-      }
-    }
-    @case ("department") {
-      <app-table [columns]="departmentColumns" [items]="departmentItems" [options]="departmentOption"/>
-      @if (add()) {
-        <app-department-form/>
-      }
-    }
+@switch (id) {
+  @case ("category") {
+    <app-list-categories/>
   }
-</div>
+  @case ("profile") {
+    <app-list-profiles/>
+  }
+  @case ("company") {
+    <app-list-companies/>
+  }
+  @case ("department") {
+    <app-list-departments/>
+  }
+}

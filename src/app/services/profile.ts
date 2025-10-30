@@ -27,7 +27,7 @@ export const ProfileColumnsData: TableColumnsType[] = [
   }
 ]
 
-export const ProfileData: ProfileType[] = [
+const ProfileData: ProfileType[] = [
   {
     id: 1,
     title: "dir-300",
@@ -65,19 +65,27 @@ export const ProfileData: ProfileType[] = [
 })
 
 export class ProfileService {
-  details(id: number) {
-    console.log('Подробнее о профиле', id)
+  create(item: ProfileType) {
+    console.log("создать", item)
+  }
+
+  read(id: number) {
+    console.log('получить', id)
   }
 
   update(id: number) {
-    console.log('Редактировать профиль', id)
+    console.log('изменить', id)
   }
 
   delete(id: number) {
-    console.log('Удалить профиль', id)
+    console.log('удалить', id)
   }
 
-  create(item: ProfileType) {
-    console.log(item)
+  restore(id: number) {
+    console.log('восстановить', id)
+  }
+
+  list(): ProfileType[] {
+    return ProfileData
   }
 }

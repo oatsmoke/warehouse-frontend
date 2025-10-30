@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
+import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
 import {CompanyService} from '../../services/company';
-import {DepartmentService} from '../../services/department';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-department-form',
+  selector: 'app-form-company',
   imports: [
     MatCardModule,
     ReactiveFormsModule,
@@ -16,11 +15,11 @@ import {DepartmentService} from '../../services/department';
     MatButtonModule,
     MatInputModule,
   ],
-  templateUrl: './department-form.html',
-  styleUrl: './department-form.css'
+  templateUrl: './form-company.html',
+  styleUrl: './form-company.css'
 })
 
-export class DepartmentForm {
+export class FormCompany {
   form: FormGroup
   title = new FormControl("", [
     Validators.required,
@@ -28,7 +27,7 @@ export class DepartmentForm {
     Validators.minLength(3),
     Validators.maxLength(50)]);
 
-  constructor(private formBuilder: FormBuilder, private departmentService: DepartmentService) {
+  constructor(private formBuilder: FormBuilder, private companyService: CompanyService) {
     this.form = this.formBuilder.group({
       title: this.title,
     })
@@ -40,6 +39,6 @@ export class DepartmentForm {
       return
     }
 
-    this.departmentService.create(this.form.value)
+    this.companyService.create(this.form.value)
   }
 }

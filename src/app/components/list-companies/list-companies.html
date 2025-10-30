@@ -1,0 +1,8 @@
+<div class="container">
+  @if (companyItems.length > 0) {
+    <app-table [columns]="companyColumns" [items]="companyItems" [options]="companyOption"/>
+  }
+  @if (add()) {
+    <app-form-company/>
+  }
+</div>

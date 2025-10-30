@@ -4,10 +4,10 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
-import {CompanyService} from '../../services/company';
+import {DepartmentService} from '../../services/department';
 
 @Component({
-  selector: 'app-company-form',
+  selector: 'app-form-department',
   imports: [
     MatCardModule,
     ReactiveFormsModule,
@@ -15,10 +15,11 @@ import {CompanyService} from '../../services/company';
     MatButtonModule,
     MatInputModule,
   ],
-  templateUrl: './company-form.html',
-  styleUrl: './company-form.css'
+  templateUrl: './form-department.html',
+  styleUrl: './form-department.css'
 })
-export class CompanyForm {
+
+export class FormDepartment {
   form: FormGroup
   title = new FormControl("", [
     Validators.required,
@@ -26,7 +27,7 @@ export class CompanyForm {
     Validators.minLength(3),
     Validators.maxLength(50)]);
 
-  constructor(private formBuilder: FormBuilder, private companyService: CompanyService) {
+  constructor(private formBuilder: FormBuilder, private departmentService: DepartmentService) {
     this.form = this.formBuilder.group({
       title: this.title,
     })
@@ -38,6 +39,6 @@ export class CompanyForm {
       return
     }
 
-    this.companyService.create(this.form.value)
+    this.departmentService.create(this.form.value)
   }
 }

@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
-import {MatButtonModule} from "@angular/material/button";
-import {MatInputModule} from "@angular/material/input";
-import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
 import {CategoryService} from '../../services/category';
 
 @Component({
-  selector: 'app-category-form',
+  selector: 'app-form-category',
   imports: [
     MatCardModule,
     ReactiveFormsModule,
@@ -15,11 +15,11 @@ import {CategoryService} from '../../services/category';
     MatButtonModule,
     MatInputModule,
   ],
-  templateUrl: './category-form.html',
-  styleUrl: './category-form.css'
+  templateUrl: './form-category.html',
+  styleUrl: './form-category.css'
 })
 
-export class CategoryForm {
+export class FormCategory {
   form: FormGroup
   title = new FormControl("", [
     Validators.required,

@@ -20,7 +20,7 @@ export const CompanyColumnsData: TableColumnsType[] = [
   }
 ]
 
-export const CompanyData: CompanyType[] = [
+const CompanyData: CompanyType[] = [
   {
     id: 1,
     title: "omkc",
@@ -43,19 +43,27 @@ export const CompanyData: CompanyType[] = [
 })
 
 export class CompanyService {
-  details(id: number) {
-    console.log('Подробнее о компании', id)
+  create(item: CompanyType) {
+    console.log("создать", item)
+  }
+
+  read(id: number) {
+    console.log('получить', id)
   }
 
   update(id: number) {
-    console.log('Редактировать компанию', id)
+    console.log('изменить', id)
   }
 
   delete(id: number) {
-    console.log('Удалить компанию', id)
+    console.log('удалить', id)
   }
 
-  create(item: CompanyType) {
-    console.log(item)
+  restore(id: number) {
+    console.log('восстановить', id)
+  }
+
+  list(): CompanyType[] {
+    return CompanyData
   }
 }
