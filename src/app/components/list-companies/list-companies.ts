@@ -5,13 +5,15 @@ import {Table} from '../table/table';
 import {FormCompany} from '../form-company/form-company';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
 import {FormConfirm} from '../form-confirm/form-confirm';
+import {FormEmpty} from '../form-empty/form-empty';
 
 @Component({
   selector: 'app-list-companies',
   imports: [
     FormCompany,
     FormConfirm,
-    Table
+    Table,
+    FormEmpty
   ],
   templateUrl: './list-companies.html',
   styleUrl: './list-companies.css'

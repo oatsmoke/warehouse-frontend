@@ -5,13 +5,15 @@ import {FormCategory} from '../form-category/form-category';
 import {Table} from '../table/table';
 import {FormConfirm} from '../form-confirm/form-confirm';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
+import {FormEmpty} from '../form-empty/form-empty';
 
 @Component({
   selector: 'app-list-categories',
   imports: [
     FormCategory,
     FormConfirm,
-    Table
+    Table,
+    FormEmpty
   ],
   templateUrl: './list-categories.html',
   styleUrl: './list-categories.css'

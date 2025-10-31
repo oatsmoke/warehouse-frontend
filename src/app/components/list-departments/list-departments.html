@@ -2,6 +2,8 @@
   @case (State.List) {
     @if (departmentItems.length > 0) {
       <app-table [columns]="departmentColumns" [items]="departmentItems" [options]="departmentOption"/>
+    }@else{
+      <app-form-empty/>
     }
   }
   @case (State.Create) {
