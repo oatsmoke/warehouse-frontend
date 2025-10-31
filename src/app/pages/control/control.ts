@@ -1,6 +1,5 @@
-import {Component, signal} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MenuControlService} from '../../services/menu-control';
 import {ListCategories} from '../../components/list-categories/list-categories';
 import {ListProfiles} from '../../components/list-profiles/list-profiles';
 import {ListCompanies} from '../../components/list-companies/list-companies';
@@ -20,14 +19,10 @@ import {ListDepartments} from '../../components/list-departments/list-department
 
 export class Control {
   id!: string
-  add = signal(false)
 
-  constructor(private route: ActivatedRoute,
-              private menuControlService: MenuControlService) {
+  constructor(private route: ActivatedRoute) {
     this.route.paramMap.subscribe(param => {
       this.id = param.get('id') || ""
     })
-
-    this.add = this.menuControlService.add
   }
 }

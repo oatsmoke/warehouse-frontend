@@ -44,23 +44,23 @@ const CategoryData: CategoryType[] = [
 
 export class CategoryService {
   create(item: CategoryType) {
-    console.log("создать", item)
+    console.log("create", item)
   }
 
-  read(id: number) {
-    console.log('получить', id)
+  read(id: number): CategoryType | undefined {
+    return CategoryData.find(c => c.id === id)
   }
 
-  update(id: number) {
-    console.log('изменить', id)
+  update(item: CategoryType) {
+    console.log("update", item)
   }
 
   delete(id: number) {
-    console.log('удалить', id)
+    console.log("delete", id)
   }
 
   restore(id: number) {
-    console.log('восстановить', id)
+    console.log("restore", id)
   }
 
   list(): CategoryType[] {

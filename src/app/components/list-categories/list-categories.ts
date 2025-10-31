@@ -3,12 +3,14 @@ import {CategoryColumnsData, CategoryService, CategoryType} from '../../services
 import {MenuOptionType} from '../menu-option/menu-option';
 import {FormCategory} from '../form-category/form-category';
 import {Table} from '../table/table';
-import {MenuControlService} from '../../services/menu-control';
+import {FormConfirm} from '../form-confirm/form-confirm';
+import {ContentStateService, State, StateDefault} from '../../services/content-state';
 
 @Component({
   selector: 'app-list-categories',
   imports: [
     FormCategory,
+    FormConfirm,
     Table
   ],
   templateUrl: './list-categories.html',
@@ -16,23 +18,46 @@ import {MenuControlService} from '../../services/menu-control';
 })
 
 export class ListCategories {
-  add = signal(false)
-
+  content = signal(StateDefault)
+  id!: number
+  category!: CategoryType
   categoryColumns = CategoryColumnsData
   categoryItems: CategoryType[] = []
   categoryOption: MenuOptionType[] = [
     {
       title: "Изменить",
-      action: (id: number) => this.categoryService.update(id)
+      action: (id: number) => this.update(id)
     },
     {
       title: "Удалить",
-      action: (id: number) => this.categoryService.delete(id)
+      action: (id: number) => this.confirm(id)
     }
   ]
+  protected readonly State = State
 
-  constructor(private categoryService: CategoryService, private menuControlService: MenuControlService) {
-    this.add = this.menuControlService.add
+  constructor(
+    private categoryService: CategoryService,
+    private contentStateService: ContentStateService) {
+    this.content = this.contentStateService.content
     this.categoryItems = this.categoryService.list()
+  }
+
+  update(id: number) {
+    let c = this.categoryService.read(id)
+    if (c) {
+      this.category = c
+      this.contentStateService.toggleContent(State.Update)
+    } else {
+      console.log(`объект ID = ${id} не найден`)
+    }
+  }
+
+  confirm(id: number) {
+    this.id = id
+    this.contentStateService.toggleContent(State.Confirm)
+  }
+
+  delete(id: number) {
+    this.categoryService.delete(id)
   }
 }

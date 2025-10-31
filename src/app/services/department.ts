@@ -44,23 +44,23 @@ const DepartmentData: DepartmentType[] = [
 
 export class DepartmentService {
   create(item: DepartmentType) {
-    console.log("создать", item)
+    console.log("create", item)
   }
 
-  read(id: number) {
-    console.log('получить', id)
+  read(id: number): DepartmentType | undefined {
+    return DepartmentData.find(c => c.id === id)
   }
 
-  update(id: number) {
-    console.log('изменить', id)
+  update(item: DepartmentType) {
+    console.log("update", item)
   }
 
   delete(id: number) {
-    console.log('удалить', id)
+    console.log("delete", id)
   }
 
   restore(id: number) {
-    console.log('восстановить', id)
+    console.log("restore", id)
   }
 
   list(): DepartmentType[] {

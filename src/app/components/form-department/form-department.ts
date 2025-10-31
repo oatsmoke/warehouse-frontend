@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
-import {DepartmentService} from '../../services/department';
+import {DepartmentService, DepartmentType} from '../../services/department';
+import {ContentStateService, State, StateDefault} from '../../services/content-state';
 
 @Component({
   selector: 'app-form-department',
@@ -19,7 +20,9 @@ import {DepartmentService} from '../../services/department';
   styleUrl: './form-department.css'
 })
 
-export class FormDepartment {
+export class FormDepartment implements OnInit {
+  @Input() department!: DepartmentType
+  head = "Создание"
   form: FormGroup
   title = new FormControl("", [
     Validators.required,
@@ -27,18 +30,43 @@ export class FormDepartment {
     Validators.minLength(3),
     Validators.maxLength(50)]);
 
-  constructor(private formBuilder: FormBuilder, private departmentService: DepartmentService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private departmentService: DepartmentService,
+    private contentStateService: ContentStateService) {
     this.form = this.formBuilder.group({
       title: this.title,
     })
   }
 
-  onSubmit() {
+  ngOnInit() {
+    if (this.contentStateService.content() === State.Update) {
+      this.head = "Изменение"
+      this.form.setValue({
+        title: this.department.title
+      })
+    }
+  }
+
+  ok() {
     if (this.form.invalid) {
       this.form.markAllAsTouched()
       return
     }
 
-    this.departmentService.create(this.form.value)
+    switch (this.contentStateService.content()) {
+      case State.Create:
+        this.departmentService.create(this.form.value)
+        this.cancel()
+        break
+      case State.Update:
+        this.departmentService.update(this.form.value)
+        this.cancel()
+        break
+    }
+  }
+
+  cancel() {
+    this.contentStateService.toggleContent(StateDefault)
   }
 }

@@ -1,8 +1,16 @@
-<div class="container">
-  @if (departmentItems.length > 0) {
-    <app-table [columns]="departmentColumns" [items]="departmentItems" [options]="departmentOption"/>
+@switch (content()) {
+  @case (State.List) {
+    @if (departmentItems.length > 0) {
+      <app-table [columns]="departmentColumns" [items]="departmentItems" [options]="departmentOption"/>
+    }
   }
-  @if (add()) {
+  @case (State.Create) {
     <app-form-department/>
   }
-</div>
+  @case (State.Update) {
+    <app-form-department [department]="department"/>
+  }
+  @case (State.Confirm) {
+    <app-form-confirm (confirm)="delete($event)" [id]="id"/>
+  }
+}

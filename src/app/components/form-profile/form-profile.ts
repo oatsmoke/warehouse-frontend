@@ -1,12 +1,13 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {CategoryType} from '../../services/category';
-import {ProfileService} from '../../services/profile';
+import {CategoryService, CategoryType} from '../../services/category';
+import {ProfileService, ProfileType} from '../../services/profile';
+import {ContentStateService, State, StateDefault} from '../../services/content-state';
 
 @Component({
   selector: 'app-form-profile',
@@ -22,7 +23,9 @@ import {ProfileService} from '../../services/profile';
   styleUrl: './form-profile.css'
 })
 
-export class FormProfile {
+export class FormProfile implements OnInit {
+  @Input() profile!: ProfileType
+  head = "Создание"
   categoryItems: CategoryType[] = []
   form: FormGroup
   title = new FormControl("", [
@@ -32,19 +35,47 @@ export class FormProfile {
     Validators.maxLength(50)])
   category = new FormControl("", Validators.required)
 
-  constructor(private formBuilder: FormBuilder, private profileService: ProfileService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private profileService: ProfileService,
+    private categoryService: CategoryService,
+    private contentStateService: ContentStateService) {
+    this.categoryItems = this.categoryService.list()
     this.form = this.formBuilder.group({
       title: this.title,
       category: this.category
     })
   }
 
-  onSubmit() {
+  ngOnInit() {
+    if (this.contentStateService.content() === State.Update) {
+      this.head = "Изменение"
+      this.form.setValue({
+        title: this.profile.title,
+        category: this.profile.category.id,
+      })
+    }
+  }
+
+  ok() {
     if (this.form.invalid) {
       this.form.markAllAsTouched()
       return
     }
 
-    this.profileService.create(this.form.value)
+    switch (this.contentStateService.content()) {
+      case State.Create:
+        this.profileService.create(this.form.value)
+        this.cancel()
+        break
+      case State.Update:
+        this.profileService.update(this.form.value)
+        this.cancel()
+        break
+    }
+  }
+
+  cancel() {
+    this.contentStateService.toggleContent(StateDefault)
   }
 }

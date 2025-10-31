@@ -44,23 +44,23 @@ const CompanyData: CompanyType[] = [
 
 export class CompanyService {
   create(item: CompanyType) {
-    console.log("создать", item)
+    console.log("create", item)
   }
 
-  read(id: number) {
-    console.log('получить', id)
+  read(id: number): CompanyType | undefined {
+    return CompanyData.find(c => c.id === id)
   }
 
-  update(id: number) {
-    console.log('изменить', id)
+  update(item: CompanyType) {
+    console.log("update", item)
   }
 
   delete(id: number) {
-    console.log('удалить', id)
+    console.log("delete", id)
   }
 
   restore(id: number) {
-    console.log('восстановить', id)
+    console.log("restore", id)
   }
 
   list(): CompanyType[] {

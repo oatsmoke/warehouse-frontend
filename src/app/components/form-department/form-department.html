@@ -1,9 +1,9 @@
 <mat-card appearance="raised">
   <mat-card-header>
-    <mat-card-title>Новый отдел</mat-card-title>
+    <mat-card-title>{{ head }}</mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <form [formGroup]="form">
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Название</mat-label>
@@ -22,8 +22,9 @@
           }
         </mat-form-field>
       </p>
-      <p>
-        <button [disabled]="form.invalid" matButton="tonal" type="submit">OK</button>
+      <p class="buttons">
+        <button (click)="ok()" [disabled]="form.invalid" matButton="tonal">OK</button>
+        <button (click)="cancel()" matButton="tonal">Отмена</button>
       </p>
     </form>
   </mat-card-actions>

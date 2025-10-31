@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CompanyService} from '../../services/company';
+import {CompanyService, CompanyType} from '../../services/company';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {ContentStateService, State, StateDefault} from '../../services/content-state';
 
 @Component({
   selector: 'app-form-company',
@@ -19,7 +20,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   styleUrl: './form-company.css'
 })
 
-export class FormCompany {
+export class FormCompany implements OnInit {
+  @Input() company!: CompanyType
+  head = "Создание"
   form: FormGroup
   title = new FormControl("", [
     Validators.required,
@@ -27,18 +30,43 @@ export class FormCompany {
     Validators.minLength(3),
     Validators.maxLength(50)]);
 
-  constructor(private formBuilder: FormBuilder, private companyService: CompanyService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private companyService: CompanyService,
+    private contentStateService: ContentStateService) {
     this.form = this.formBuilder.group({
       title: this.title,
     })
   }
 
-  onSubmit() {
+  ngOnInit() {
+    if (this.contentStateService.content() === State.Update) {
+      this.head = "Изменение"
+      this.form.setValue({
+        title: this.company.title
+      })
+    }
+  }
+
+  ok() {
     if (this.form.invalid) {
       this.form.markAllAsTouched()
       return
     }
 
-    this.companyService.create(this.form.value)
+    switch (this.contentStateService.content()) {
+      case State.Create:
+        this.companyService.create(this.form.value)
+        this.cancel()
+        break
+      case State.Update:
+        this.companyService.update(this.form.value)
+        this.cancel()
+        break
+    }
+  }
+
+  cancel() {
+    this.contentStateService.toggleContent(StateDefault)
   }
 }
