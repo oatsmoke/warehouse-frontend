@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {CategoryService, CategoryType} from '../../services/category';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
+import {take} from 'rxjs';
+import {SnackBarService} from '../../services/snack-bar';
 
 @Component({
   selector: 'app-form-category',
@@ -33,9 +35,12 @@ export class FormCategory implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
-    private contentStateService: ContentStateService) {
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
     this.form = this.formBuilder.group({
-      title: this.title,
+      id: 0,
+      title: this.title
     })
   }
 
@@ -43,6 +48,7 @@ export class FormCategory implements OnInit {
     if (this.contentStateService.content() === State.Update) {
       this.head = "Изменение"
       this.form.setValue({
+        id: this.category.id,
         title: this.category.title
       })
     }
@@ -56,12 +62,24 @@ export class FormCategory implements OnInit {
 
     switch (this.contentStateService.content()) {
       case State.Create:
-        this.categoryService.create(this.form.value)
-        this.cancel()
+        this.categoryService.create(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Категория добавлена!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
       case State.Update:
-        this.categoryService.update(this.form.value)
-        this.cancel()
+        this.categoryService.update(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Категория обновлена!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
     }
   }

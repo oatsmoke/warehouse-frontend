@@ -6,6 +6,8 @@ import {FormCompany} from '../form-company/form-company';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
 import {FormConfirm} from '../form-confirm/form-confirm';
 import {FormEmpty} from '../form-empty/form-empty';
+import {SnackBarService} from '../../services/snack-bar';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-list-companies',
@@ -28,30 +30,35 @@ export class ListCompanies {
   companyOption: MenuOptionType[] = [
     {
       title: "Изменить",
+      title_deleted: "",
       action: (id: number) => this.update(id)
     },
     {
       title: "Удалить",
-      action: (id: number) => this.confirm(id)
+      title_deleted: "Восстановить",
+      action: (id: number, deleted: string) => !deleted ? this.confirm(id) : this.restore(id)
     }
   ]
   protected readonly State = State
 
   constructor(
     private companyService: CompanyService,
-    private contentStateService: ContentStateService) {
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
     this.content = this.contentStateService.content
-    this.companyItems = this.companyService.list()
+    this.list()
   }
 
   update(id: number) {
-    let c = this.companyService.read(id)
-    if (c) {
-      this.company = c
-      this.contentStateService.toggleContent(State.Update)
-    } else {
-      console.log(`объект ID = ${id} не найден`)
-    }
+    this.companyService.read(id).pipe(take(1)).subscribe({
+      next: (data) => {
+        this.company = data
+        this.contentStateService.toggleContent(State.Update)
+      },
+      error: () => {
+      }
+    })
   }
 
   confirm(id: number) {
@@ -60,6 +67,32 @@ export class ListCompanies {
   }
 
   delete(id: number) {
-    this.companyService.delete(id)
+    this.companyService.delete(id).pipe(take(1)).subscribe({
+      next: _ => {
+        this.snackBarService.success("Компания удалена!")
+      },
+      error: () => {
+      }
+    })
+  }
+
+  restore(id: number) {
+    this.companyService.restore(id).pipe(take(1)).subscribe({
+      next: _ => {
+        this.snackBarService.success("Компания восстановлена!")
+      },
+      error: () => {
+      }
+    })
+  }
+
+  list() {
+    this.companyService.list().pipe(take(1)).subscribe({
+      next: (data) => {
+        this.companyItems = data.list
+      },
+      error: () => {
+      }
+    })
   }
 }

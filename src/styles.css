@@ -1,4 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.success-snackbar {
+  --mat-snack-bar-container-color: #4caf50;
+}
+
+.error-snackbar {
+  --mat-snack-bar-container-color: #ef5350;
+}
+
+.mat-mdc-snack-bar-container {
+  --mat-snack-bar-button-color: #fff;
+}
+
+.mat-mdc-snack-bar-label {
+  text-align: center;
+}

@@ -1,10 +1,17 @@
 import {Injectable} from '@angular/core';
 import {TableColumnsType} from '../components/table/table';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 export interface DepartmentType {
   id: number
   title: string
   deleted_at: string
+}
+
+export interface DepartmentList {
+  list: DepartmentType[]
+  total: number
 }
 
 export const DepartmentColumnsData: TableColumnsType[] = [
@@ -20,50 +27,44 @@ export const DepartmentColumnsData: TableColumnsType[] = [
   }
 ]
 
-const DepartmentData: DepartmentType[] = [
-  {
-    id: 1,
-    title: "1 участок",
-    deleted_at: ""
-  },
-  {
-    id: 2,
-    title: "2 участок",
-    deleted_at: ""
-  },
-  {
-    id: 3,
-    title: "3 участок",
-    deleted_at: ""
-  }
-]
+const urlDepartments = "/api/departments"
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DepartmentService {
-  create(item: DepartmentType) {
-    console.log("create", item)
+  constructor(private httpClient: HttpClient) {
   }
 
-  read(id: number): DepartmentType | undefined {
-    return DepartmentData.find(c => c.id === id)
+  create(item: DepartmentType) {
+    const url = new URL(urlDepartments, environment.apiUrl)
+    return this.httpClient.post<void>(url.toString(), item)
+  }
+
+  read(id: number) {
+    const url = new URL(`${urlDepartments}/${id}`, environment.apiUrl)
+    return this.httpClient.get<DepartmentType>(url.toString())
   }
 
   update(item: DepartmentType) {
-    console.log("update", item)
+    const url = new URL(`${urlDepartments}/${item.id}`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), item)
   }
 
   delete(id: number) {
-    console.log("delete", id)
+    const url = new URL(`${urlDepartments}/${id}`, environment.apiUrl)
+    return this.httpClient.delete<void>(url.toString())
   }
 
   restore(id: number) {
-    console.log("restore", id)
+    const url = new URL(`${urlDepartments}/${id}/restore`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list(): DepartmentType[] {
-    return DepartmentData
+  list() {
+    const url = new URL(urlDepartments, environment.apiUrl)
+    url.searchParams.set("deleted", "true")
+    return this.httpClient.get<DepartmentList>(url.toString())
   }
 }

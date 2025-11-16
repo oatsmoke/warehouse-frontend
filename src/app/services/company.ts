@@ -1,10 +1,17 @@
 import {Injectable} from '@angular/core';
 import {TableColumnsType} from '../components/table/table';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 export interface CompanyType {
   id: number
   title: string
   deleted_at: string
+}
+
+export interface CompanyList {
+  list: CompanyType[]
+  total: number
 }
 
 export const CompanyColumnsData: TableColumnsType[] = [
@@ -20,50 +27,44 @@ export const CompanyColumnsData: TableColumnsType[] = [
   }
 ]
 
-const CompanyData: CompanyType[] = [
-  {
-    id: 1,
-    title: "omkc",
-    deleted_at: ""
-  },
-  {
-    id: 2,
-    title: "mts",
-    deleted_at: ""
-  },
-  {
-    id: 3,
-    title: "megafon",
-    deleted_at: ""
-  }
-]
+const urlCompanies = "/api/companies"
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CompanyService {
-  create(item: CompanyType) {
-    console.log("create", item)
+  constructor(private httpClient: HttpClient) {
   }
 
-  read(id: number): CompanyType | undefined {
-    return CompanyData.find(c => c.id === id)
+  create(item: CompanyType) {
+    const url = new URL(urlCompanies, environment.apiUrl)
+    return this.httpClient.post<void>(url.toString(), item)
+  }
+
+  read(id: number) {
+    const url = new URL(`${urlCompanies}/${id}`, environment.apiUrl)
+    return this.httpClient.get<CompanyType>(url.toString())
   }
 
   update(item: CompanyType) {
-    console.log("update", item)
+    const url = new URL(`${urlCompanies}/${item.id}`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), item)
   }
 
   delete(id: number) {
-    console.log("delete", id)
+    const url = new URL(`${urlCompanies}/${id}`, environment.apiUrl)
+    return this.httpClient.delete<void>(url.toString())
   }
 
   restore(id: number) {
-    console.log("restore", id)
+    const url = new URL(`${urlCompanies}/${id}/restore`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list(): CompanyType[] {
-    return CompanyData
+  list() {
+    const url = new URL(urlCompanies, environment.apiUrl)
+    url.searchParams.set("deleted", "true")
+    return this.httpClient.get<CompanyList>(url.toString())
   }
 }

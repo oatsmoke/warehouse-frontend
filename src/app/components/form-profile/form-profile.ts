@@ -8,6 +8,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {CategoryService, CategoryType} from '../../services/category';
 import {ProfileService, ProfileType} from '../../services/profile';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
+import {SnackBarService} from '../../services/snack-bar';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-form-profile',
@@ -39,9 +41,19 @@ export class FormProfile implements OnInit {
     private formBuilder: FormBuilder,
     private profileService: ProfileService,
     private categoryService: CategoryService,
-    private contentStateService: ContentStateService) {
-    this.categoryItems = this.categoryService.list()
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
+    this.categoryService.list().pipe(take(1)).subscribe({
+      next: (data) => {
+        this.categoryItems = data.list
+      },
+      error: () => {
+      }
+    })
+
     this.form = this.formBuilder.group({
+      id: 0,
       title: this.title,
       category: this.category
     })
@@ -51,8 +63,9 @@ export class FormProfile implements OnInit {
     if (this.contentStateService.content() === State.Update) {
       this.head = "Изменение"
       this.form.setValue({
+        id: this.profile.id,
         title: this.profile.title,
-        category: this.profile.category.id,
+        category: this.profile.category.id
       })
     }
   }
@@ -65,12 +78,24 @@ export class FormProfile implements OnInit {
 
     switch (this.contentStateService.content()) {
       case State.Create:
-        this.profileService.create(this.form.value)
-        this.cancel()
+        this.profileService.create(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Профиль добавлен!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
       case State.Update:
-        this.profileService.update(this.form.value)
-        this.cancel()
+        this.profileService.update(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Профиль обновлен!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
     }
   }

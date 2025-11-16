@@ -1,12 +1,19 @@
 import {Injectable} from '@angular/core';
 import {CategoryType} from './category';
 import {TableColumnsType} from '../components/table/table';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 export interface ProfileType {
   id: number
   title: string
   category: CategoryType
   deleted_at: string
+}
+
+export interface ProfileList {
+  list: ProfileType[]
+  total: number
 }
 
 export const ProfileColumnsData: TableColumnsType[] = [
@@ -27,65 +34,44 @@ export const ProfileColumnsData: TableColumnsType[] = [
   }
 ]
 
-const ProfileData: ProfileType[] = [
-  {
-    id: 1,
-    title: "dir-300",
-    category: {
-      id: 1,
-      title: "router",
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 2,
-    title: "tl-wr840",
-    category: {
-      id: 1,
-      title: "router",
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 3,
-    title: "conax",
-    category: {
-      id: 2,
-      title: "CAM-module",
-      deleted_at: ""
-    },
-    deleted_at: ""
-  }
-]
+const urlProfiles = "/api/profiles"
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProfileService {
-  create(item: ProfileType) {
-    console.log("create", item)
+  constructor(private httpClient: HttpClient) {
   }
 
-  read(id: number): ProfileType | undefined {
-    return ProfileData.find(c => c.id === id)
+  create(item: ProfileType) {
+    const url = new URL(urlProfiles, environment.apiUrl)
+    return this.httpClient.post<void>(url.toString(), item)
+  }
+
+  read(id: number) {
+    const url = new URL(`${urlProfiles}/${id}`, environment.apiUrl)
+    return this.httpClient.get<ProfileType>(url.toString())
   }
 
   update(item: ProfileType) {
-    console.log("update", item)
+    const url = new URL(`${urlProfiles}/${item.id}`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), item)
   }
 
   delete(id: number) {
-    console.log("delete", id)
+    const url = new URL(`${urlProfiles}/${id}`, environment.apiUrl)
+    return this.httpClient.delete<void>(url.toString())
   }
 
   restore(id: number) {
-    console.log("restore", id)
+    const url = new URL(`${urlProfiles}/${id}/restore`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list(): ProfileType[] {
-    return ProfileData
+  list() {
+    const url = new URL(urlProfiles, environment.apiUrl)
+    url.searchParams.set("deleted", "true")
+    return this.httpClient.get<ProfileList>(url.toString())
   }
 }

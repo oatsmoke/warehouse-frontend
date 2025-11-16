@@ -6,6 +6,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
+import {SnackBarService} from '../../services/snack-bar';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-form-company',
@@ -33,9 +35,12 @@ export class FormCompany implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private companyService: CompanyService,
-    private contentStateService: ContentStateService) {
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
     this.form = this.formBuilder.group({
-      title: this.title,
+      id: 0,
+      title: this.title
     })
   }
 
@@ -43,6 +48,7 @@ export class FormCompany implements OnInit {
     if (this.contentStateService.content() === State.Update) {
       this.head = "Изменение"
       this.form.setValue({
+        id: this.company.id,
         title: this.company.title
       })
     }
@@ -56,12 +62,24 @@ export class FormCompany implements OnInit {
 
     switch (this.contentStateService.content()) {
       case State.Create:
-        this.companyService.create(this.form.value)
-        this.cancel()
+        this.companyService.create(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Компания добавлена!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
       case State.Update:
-        this.companyService.update(this.form.value)
-        this.cancel()
+        this.companyService.update(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Компания обновлена!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
     }
   }

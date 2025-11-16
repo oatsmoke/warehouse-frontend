@@ -2,7 +2,7 @@
   @case (State.List) {
     @if (categoryItems.length > 0) {
       <app-table [columns]="categoryColumns" [items]="categoryItems" [options]="categoryOption"/>
-    }@else{
+    } @else {
       <app-form-empty/>
     }
   }
@@ -13,6 +13,6 @@
     <app-form-category [category]="category"/>
   }
   @case (State.Confirm) {
-    <app-form-confirm [id]="id" (confirm)="delete($event)"/>
+    <app-form-confirm (confirm)="delete($event)" [id]="id"/>
   }
 }

@@ -3,8 +3,8 @@
 </button>
 <mat-menu #options="matMenu">
   @for (item of items; track item) {
-    <button (click)="item.action(id)" mat-menu-item>
-      {{ item.title }}
+    <button (click)="item.action(id, deleted)" mat-menu-item>
+      {{ !deleted || !item.title_deleted ? item.title : item.title_deleted }}
     </button>
   }
 </mat-menu>

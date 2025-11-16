@@ -1,10 +1,17 @@
 import {Injectable} from '@angular/core';
 import {TableColumnsType} from '../components/table/table';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 export interface CategoryType {
   id: number
   title: string
   deleted_at: string
+}
+
+export interface CategoryList {
+  list: CategoryType[]
+  total: number
 }
 
 export const CategoryColumnsData: TableColumnsType[] = [
@@ -20,50 +27,44 @@ export const CategoryColumnsData: TableColumnsType[] = [
   }
 ]
 
-const CategoryData: CategoryType[] = [
-  {
-    id: 1,
-    title: "router",
-    deleted_at: ""
-  },
-  {
-    id: 2,
-    title: "CAM-module",
-    deleted_at: ""
-  },
-  {
-    id: 3,
-    title: "DTV set-top box",
-    deleted_at: ""
-  }
-]
+const urlCategories = "/api/categories"
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CategoryService {
-  create(item: CategoryType) {
-    console.log("create", item)
+  constructor(private httpClient: HttpClient) {
   }
 
-  read(id: number): CategoryType | undefined {
-    return CategoryData.find(c => c.id === id)
+  create(item: CategoryType) {
+    const url = new URL(urlCategories, environment.apiUrl)
+    return this.httpClient.post<void>(url.toString(), item)
+  }
+
+  read(id: number) {
+    const url = new URL(`${urlCategories}/${id}`, environment.apiUrl)
+    return this.httpClient.get<CategoryType>(url.toString())
   }
 
   update(item: CategoryType) {
-    console.log("update", item)
+    const url = new URL(`${urlCategories}/${item.id}`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), item)
   }
 
   delete(id: number) {
-    console.log("delete", id)
+    const url = new URL(`${urlCategories}/${id}`, environment.apiUrl)
+    return this.httpClient.delete<void>(url.toString())
   }
 
   restore(id: number) {
-    console.log("restore", id)
+    const url = new URL(`${urlCategories}/${id}/restore`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list(): CategoryType[] {
-    return CategoryData
+  list() {
+    const url = new URL(urlCategories, environment.apiUrl)
+    url.searchParams.set("deleted", "true")
+    return this.httpClient.get<CategoryList>(url.toString())
   }
 }

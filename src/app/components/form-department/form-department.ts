@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {DepartmentService, DepartmentType} from '../../services/department';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
+import {SnackBarService} from '../../services/snack-bar';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-form-department',
@@ -33,9 +35,12 @@ export class FormDepartment implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private departmentService: DepartmentService,
-    private contentStateService: ContentStateService) {
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
     this.form = this.formBuilder.group({
-      title: this.title,
+      id: 0,
+      title: this.title
     })
   }
 
@@ -43,6 +48,7 @@ export class FormDepartment implements OnInit {
     if (this.contentStateService.content() === State.Update) {
       this.head = "Изменение"
       this.form.setValue({
+        id: this.department.id,
         title: this.department.title
       })
     }
@@ -56,12 +62,24 @@ export class FormDepartment implements OnInit {
 
     switch (this.contentStateService.content()) {
       case State.Create:
-        this.departmentService.create(this.form.value)
-        this.cancel()
+        this.departmentService.create(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Отдел добавлен!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
       case State.Update:
-        this.departmentService.update(this.form.value)
-        this.cancel()
+        this.departmentService.update(this.form.value).pipe(take(1)).subscribe({
+          next: () => {
+            this.snackBarService.success("Отдел обновлен!")
+            this.cancel()
+          },
+          error: () => {
+          }
+        })
         break
     }
   }

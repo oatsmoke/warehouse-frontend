@@ -6,6 +6,8 @@ import {Table} from '../table/table';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
 import {FormConfirm} from '../form-confirm/form-confirm';
 import {FormEmpty} from '../form-empty/form-empty';
+import {take} from 'rxjs';
+import {SnackBarService} from '../../services/snack-bar';
 
 @Component({
   selector: 'app-list-departments',
@@ -28,30 +30,35 @@ export class ListDepartments {
   departmentOption: MenuOptionType[] = [
     {
       title: "Изменить",
+      title_deleted: "",
       action: (id: number) => this.update(id)
     },
     {
       title: "Удалить",
-      action: (id: number) => this.confirm(id)
+      title_deleted: "Восстановить",
+      action: (id: number, deleted: string) => !deleted ? this.confirm(id) : this.restore(id)
     }
   ]
   protected readonly State = State
 
   constructor(
     private departmentService: DepartmentService,
-    private contentStateService: ContentStateService) {
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
     this.content = this.contentStateService.content
-    this.departmentItems = this.departmentService.list()
+    this.list()
   }
 
   update(id: number) {
-    let d = this.departmentService.read(id)
-    if (d) {
-      this.department = d
-      this.contentStateService.toggleContent(State.Update)
-    } else {
-      console.log(`объект ID = ${id} не найден`)
-    }
+    this.departmentService.read(id).pipe(take(1)).subscribe({
+      next: (data) => {
+        this.department = data
+        this.contentStateService.toggleContent(State.Update)
+      },
+      error: () => {
+      }
+    })
   }
 
   confirm(id: number) {
@@ -60,6 +67,32 @@ export class ListDepartments {
   }
 
   delete(id: number) {
-    this.departmentService.delete(id)
+    this.departmentService.delete(id).pipe(take(1)).subscribe({
+      next: _ => {
+        this.snackBarService.success("Отдел удален!")
+      },
+      error: () => {
+      }
+    })
+  }
+
+  restore(id: number) {
+    this.departmentService.restore(id).pipe(take(1)).subscribe({
+      next: _ => {
+        this.snackBarService.success("Отдел восстановлен!")
+      },
+      error: () => {
+      }
+    })
+  }
+
+  list() {
+    this.departmentService.list().pipe(take(1)).subscribe({
+      next: (data) => {
+        this.departmentItems = data.list
+      },
+      error: () => {
+      }
+    })
   }
 }

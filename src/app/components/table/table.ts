@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatTableModule} from "@angular/material/table";
 import {MenuOption, MenuOptionType} from '../menu-option/menu-option';
+import {TableCellPipe} from '../../table-cell-pipe';
 
 export interface TableColumnsType {
   column_def: string
@@ -12,7 +13,8 @@ export interface TableColumnsType {
   selector: 'app-table',
   imports: [
     MatTableModule,
-    MenuOption
+    MenuOption,
+    TableCellPipe
   ],
   templateUrl: './table.html',
   styleUrl: './table.css'

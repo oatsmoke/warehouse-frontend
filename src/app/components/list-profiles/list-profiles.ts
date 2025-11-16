@@ -6,6 +6,8 @@ import {MenuOptionType} from '../menu-option/menu-option';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
 import {FormConfirm} from '../form-confirm/form-confirm';
 import {FormEmpty} from '../form-empty/form-empty';
+import {SnackBarService} from '../../services/snack-bar';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-list-profiles',
@@ -28,30 +30,35 @@ export class ListProfiles {
   profileOption: MenuOptionType[] = [
     {
       title: "Изменить",
+      title_deleted: "",
       action: (id: number) => this.update(id)
     },
     {
       title: "Удалить",
-      action: (id: number) => this.confirm(id)
+      title_deleted: "Восстановить",
+      action: (id: number, deleted: string) => !deleted ? this.confirm(id) : this.restore(id)
     }
   ]
   protected readonly State = State
 
   constructor(
     private profileService: ProfileService,
-    private contentStateService: ContentStateService) {
+    private contentStateService: ContentStateService,
+    private snackBarService: SnackBarService
+  ) {
     this.content = this.contentStateService.content
-    this.profileItems = this.profileService.list()
+    this.list()
   }
 
   update(id: number) {
-    let c = this.profileService.read(id)
-    if (c) {
-      this.profile = c
-      this.contentStateService.toggleContent(State.Update)
-    } else {
-      console.log(`объект ID = ${id} не найден`)
-    }
+    this.profileService.read(id).pipe(take(1)).subscribe({
+      next: (data) => {
+        this.profile = data
+        this.contentStateService.toggleContent(State.Update)
+      },
+      error: () => {
+      }
+    })
   }
 
   confirm(id: number) {
@@ -60,6 +67,32 @@ export class ListProfiles {
   }
 
   delete(id: number) {
-    this.profileService.delete(id)
+    this.profileService.delete(id).pipe(take(1)).subscribe({
+      next: _ => {
+        this.snackBarService.success("Профиль удален!")
+      },
+      error: () => {
+      }
+    })
+  }
+
+  restore(id: number) {
+    this.profileService.restore(id).pipe(take(1)).subscribe({
+      next: _ => {
+        this.snackBarService.success("Профиль восстановлен!")
+      },
+      error: () => {
+      }
+    })
+  }
+
+  list() {
+    this.profileService.list().pipe(take(1)).subscribe({
+      next: (data) => {
+        this.profileItems = data.list
+      },
+      error: () => {
+      }
+    })
   }
 }

@@ -2,7 +2,7 @@
   @case (State.List) {
     @if (profileItems.length > 0) {
       <app-table [columns]="profileColumns" [items]="profileItems" [options]="profileOption"/>
-    }@else{
+    } @else {
       <app-form-empty/>
     }
   }

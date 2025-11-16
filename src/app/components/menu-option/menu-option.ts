@@ -5,7 +5,8 @@ import {MatIconModule} from '@angular/material/icon';
 
 export interface MenuOptionType {
   title: string
-  action: (id: number) => void
+  title_deleted: string
+  action: (id: number, deleted: string) => void
 }
 
 @Component({
@@ -22,4 +23,5 @@ export interface MenuOptionType {
 export class MenuOption {
   @Input() items: MenuOptionType[] = []
   @Input() id!: number
+  @Input() deleted!: string
 }

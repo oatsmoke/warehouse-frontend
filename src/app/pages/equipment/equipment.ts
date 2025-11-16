@@ -22,14 +22,17 @@ export class Equipment {
   equipmentOption: MenuOptionType[] = [
     {
       title: "Подробнее",
+      title_deleted:"",
       action: (id: number) => this.equipmentService.details(id)
     },
     {
       title: "Изменить",
+      title_deleted:"",
       action: (id: number) => this.equipmentService.update(id)
     },
     {
       title: "Удалить",
+      title_deleted:"",
       action: (id: number) => this.equipmentService.delete(id)
     }
   ]
