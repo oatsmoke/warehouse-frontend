@@ -8,6 +8,7 @@ import {ContentStateService, State, StateDefault} from '../../services/content-s
 import {FormEmpty} from '../form-empty/form-empty';
 import {take} from 'rxjs';
 import {SnackBarService} from '../../services/snack-bar';
+import {QueryParams} from '../../services/list';
 
 @Component({
   selector: 'app-list-categories',
@@ -70,6 +71,7 @@ export class ListCategories {
     this.categoryService.delete(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Категория удалена!")
+        this.list()
       },
       error: () => {
       }
@@ -80,6 +82,7 @@ export class ListCategories {
     this.categoryService.restore(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Категория восстановлена!")
+        this.list()
       },
       error: () => {
       }
@@ -87,7 +90,17 @@ export class ListCategories {
   }
 
   list() {
-    this.categoryService.list().pipe(take(1)).subscribe({
+    const qp: QueryParams = {
+      WithDeleted: "true",
+      Search: "",
+      Ids: [],
+      SortColumn: "",
+      SortOrder: "",
+      PaginationLimit: 0,
+      PaginationOffset: 0,
+    }
+
+    this.categoryService.list(qp).pipe(take(1)).subscribe({
       next: (data) => {
         this.categoryItems = data.list
       },

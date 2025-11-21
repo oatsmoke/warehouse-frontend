@@ -5,6 +5,7 @@ import {TableColumnsType} from '../components/table/table';
 export interface EquipmentType {
   id: number
   serial_number: string
+  profile_id: number
   profile: ProfileType
   deleted_at: string
 }
@@ -31,9 +32,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 1,
     serial_number: "123qaz",
+    profile_id: 1,
     profile: {
       id: 1,
       title: "dir-300",
+      category_id: 1,
       category: {
         id: 1,
         title: "router",
@@ -46,9 +49,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 2,
     serial_number: "123wsx",
+    profile_id: 1,
     profile: {
       id: 1,
       title: "dir-300",
+      category_id: 1,
       category: {
         id: 1,
         title: "router",
@@ -61,9 +66,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 3,
     serial_number: "123edc",
+    profile_id: 1,
     profile: {
       id: 1,
       title: "dir-300",
+      category_id: 1,
       category: {
         id: 1,
         title: "router",
@@ -76,9 +83,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 4,
     serial_number: "123rfv",
+    profile_id: 1,
     profile: {
       id: 1,
       title: "dir-300",
+      category_id: 1,
       category: {
         id: 1,
         title: "router",
@@ -91,9 +100,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 5,
     serial_number: "123tgb",
+    profile_id: 1,
     profile: {
       id: 1,
       title: "dir-300",
+      category_id: 1,
       category: {
         id: 1,
         title: "router",
@@ -106,9 +117,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 7,
     serial_number: "111qqq",
+    profile_id: 3,
     profile: {
       id: 3,
       title: "conax",
+      category_id: 2,
       category: {
         id: 2,
         title: "CAM-module",
@@ -121,9 +134,11 @@ export const EquipmentData: EquipmentType[] = [
   {
     id: 8,
     serial_number: "222www",
+    profile_id: 3,
     profile: {
       id: 3,
       title: "conax",
+      category_id: 2,
       category: {
         id: 2,
         title: "CAM-module",

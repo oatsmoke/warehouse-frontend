@@ -8,6 +8,7 @@ import {FormConfirm} from '../form-confirm/form-confirm';
 import {FormEmpty} from '../form-empty/form-empty';
 import {SnackBarService} from '../../services/snack-bar';
 import {take} from 'rxjs';
+import {QueryParams} from '../../services/list';
 
 @Component({
   selector: 'app-list-companies',
@@ -70,6 +71,7 @@ export class ListCompanies {
     this.companyService.delete(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Компания удалена!")
+        this.list()
       },
       error: () => {
       }
@@ -80,6 +82,7 @@ export class ListCompanies {
     this.companyService.restore(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Компания восстановлена!")
+        this.list()
       },
       error: () => {
       }
@@ -87,7 +90,17 @@ export class ListCompanies {
   }
 
   list() {
-    this.companyService.list().pipe(take(1)).subscribe({
+    const qp: QueryParams = {
+      WithDeleted: "true",
+      Search: "",
+      Ids: [],
+      SortColumn: "",
+      SortOrder: "",
+      PaginationLimit: 0,
+      PaginationOffset: 0,
+    }
+
+    this.companyService.list(qp).pipe(take(1)).subscribe({
       next: (data) => {
         this.companyItems = data.list
       },

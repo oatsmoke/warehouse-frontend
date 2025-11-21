@@ -11,6 +11,7 @@ import {MenuLeftData} from '../../services/menu-left';
 import {ToolbarDepartment} from '../toolbar-department/toolbar-department';
 import {ToolbarContract} from '../toolbar-contract/toolbar-contract';
 import {ToolbarControl} from '../toolbar-control/toolbar-control';
+import {WebSocketService} from '../../services/web-socket';
 
 @Component({
   selector: 'app-shell',
@@ -37,7 +38,10 @@ export class Shell {
   id!: string
   protected readonly title = signal("")
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private webSocketService: WebSocketService
+  ) {
     const menuLeft = MenuLeftData
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       const primary = this.router.parseUrl(this.router.url).root.children["primary"]
@@ -56,6 +60,7 @@ export class Shell {
         this.url = "/" + params[0]
         this.param = params[1] || ""
         this.id = params[2] || ""
+        this.webSocketService.send(this.url + "/" + this.param + "/" + this.id)
       } else {
         this.router.navigate(['/equipment/department/0']).then()
       }

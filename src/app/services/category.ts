@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {TableColumnsType} from '../components/table/table';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {ListService, QueryParams} from './list';
 
 export interface CategoryType {
   id: number
@@ -34,7 +35,10 @@ const urlCategories = "/api/categories"
 })
 
 export class CategoryService {
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private listService: ListService
+  ) {
   }
 
   create(item: CategoryType) {
@@ -62,9 +66,8 @@ export class CategoryService {
     return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list() {
-    const url = new URL(urlCategories, environment.apiUrl)
-    url.searchParams.set("deleted", "true")
+  list(qp: QueryParams) {
+    const url = this.listService.buildQuery(new URL(urlCategories, environment.apiUrl), qp)
     return this.httpClient.get<CategoryList>(url.toString())
   }
 }

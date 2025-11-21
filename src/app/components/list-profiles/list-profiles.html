@@ -1,16 +1,16 @@
 @switch (content()) {
   @case (State.List) {
-    @if (profileItems.length > 0) {
+    @if (profileItems) {
       <app-table [columns]="profileColumns" [items]="profileItems" [options]="profileOption"/>
     } @else {
       <app-form-empty/>
     }
   }
   @case (State.Create) {
-    <app-form-profile/>
+    <app-form-profile (relist)="list()"/>
   }
   @case (State.Update) {
-    <app-form-profile [profile]="profile"/>
+    <app-form-profile (relist)="list()" [profile]="profile"/>
   }
   @case (State.Confirm) {
     <app-form-confirm (confirm)="delete($event)" [id]="id"/>

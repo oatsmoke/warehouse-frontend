@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {TableColumnsType} from '../components/table/table';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {ListService, QueryParams} from './list';
 
 export interface CompanyType {
   id: number
@@ -34,7 +35,10 @@ const urlCompanies = "/api/companies"
 })
 
 export class CompanyService {
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private listService: ListService
+  ) {
   }
 
   create(item: CompanyType) {
@@ -62,9 +66,8 @@ export class CompanyService {
     return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list() {
-    const url = new URL(urlCompanies, environment.apiUrl)
-    url.searchParams.set("deleted", "true")
+  list(qp: QueryParams) {
+    const url = this.listService.buildQuery(new URL(urlCompanies, environment.apiUrl), qp)
     return this.httpClient.get<CompanyList>(url.toString())
   }
 }

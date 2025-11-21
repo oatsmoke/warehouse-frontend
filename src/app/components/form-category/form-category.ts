@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -24,6 +24,7 @@ import {SnackBarService} from '../../services/snack-bar';
 
 export class FormCategory implements OnInit {
   @Input() category!: CategoryType
+  @Output() relist = new EventEmitter<void>()
   head = "Создание"
   form: FormGroup
   title = new FormControl("", [
@@ -65,6 +66,7 @@ export class FormCategory implements OnInit {
         this.categoryService.create(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Категория добавлена!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {
@@ -75,6 +77,7 @@ export class FormCategory implements OnInit {
         this.categoryService.update(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Категория обновлена!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {

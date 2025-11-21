@@ -8,6 +8,7 @@ import {FormConfirm} from '../form-confirm/form-confirm';
 import {FormEmpty} from '../form-empty/form-empty';
 import {SnackBarService} from '../../services/snack-bar';
 import {take} from 'rxjs';
+import {QueryParams} from '../../services/list';
 
 @Component({
   selector: 'app-list-profiles',
@@ -70,6 +71,7 @@ export class ListProfiles {
     this.profileService.delete(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Профиль удален!")
+        this.list()
       },
       error: () => {
       }
@@ -80,6 +82,7 @@ export class ListProfiles {
     this.profileService.restore(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Профиль восстановлен!")
+        this.list()
       },
       error: () => {
       }
@@ -87,7 +90,17 @@ export class ListProfiles {
   }
 
   list() {
-    this.profileService.list().pipe(take(1)).subscribe({
+    const qp: QueryParams = {
+      WithDeleted: "true",
+      Search: "",
+      Ids: [],
+      SortColumn: "",
+      SortOrder: "",
+      PaginationLimit: 0,
+      PaginationOffset: 0,
+    }
+
+    this.profileService.list(qp).pipe(take(1)).subscribe({
       next: (data) => {
         this.profileItems = data.list
       },

@@ -12,16 +12,17 @@ export const catchErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      let msg: string
+      let msg!: string
 
-      if (err.error && typeof err.error === "string") {
+      if (err.status === 0) {
+        msg = err.message
+      } else if (err.error && typeof err.error === "string") {
         msg = err.error
       } else {
         const apiError = err.error as ApiErrorResponse
         msg = apiError.message || "unknown error"
       }
 
-      console.error(msg)
       snackBarService.error(msg)
 
       return throwError(() => new Error(msg))

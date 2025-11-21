@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CompanyService, CompanyType} from '../../services/company';
 import {MatButtonModule} from '@angular/material/button';
@@ -24,6 +24,7 @@ import {take} from 'rxjs';
 
 export class FormCompany implements OnInit {
   @Input() company!: CompanyType
+  @Output() relist = new EventEmitter<void>()
   head = "Создание"
   form: FormGroup
   title = new FormControl("", [
@@ -65,6 +66,7 @@ export class FormCompany implements OnInit {
         this.companyService.create(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Компания добавлена!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {
@@ -75,6 +77,7 @@ export class FormCompany implements OnInit {
         this.companyService.update(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Компания обновлена!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {

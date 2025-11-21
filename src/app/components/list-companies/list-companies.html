@@ -1,16 +1,16 @@
 @switch (content()) {
   @case (State.List) {
-    @if (companyItems.length > 0) {
+    @if (companyItems) {
       <app-table [columns]="companyColumns" [items]="companyItems" [options]="companyOption"/>
     } @else {
       <app-form-empty/>
     }
   }
   @case (State.Create) {
-    <app-form-company/>
+    <app-form-company (relist)="list()"/>
   }
   @case (State.Update) {
-    <app-form-company [company]="company"/>
+    <app-form-company (relist)="list()" [company]="company"/>
   }
   @case (State.Confirm) {
     <app-form-confirm (confirm)="delete($event)" [id]="id"/>

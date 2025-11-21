@@ -5,9 +5,7 @@
         <h3>{{ column.header }}</h3>
       </th>
       <td *matCellDef="let cell" mat-cell>
-<!--        @if (column.cell(cell) != "undefined") {-->
-          {{ column.cell(cell)|tableCell }}
-<!--        }-->
+        {{ column.cell(cell)|tableCell }}
       </td>
     </ng-container>
   }
@@ -15,7 +13,7 @@
     <th *matHeaderCellDef class="options" mat-header-cell>
     </th>
     <td *matCellDef="let cell" mat-cell>
-      <app-menu-option [id]="cell.id" [deleted]="cell.deleted_at" [items]="options"/>
+      <app-menu-option [deleted]="cell.deleted_at" [id]="cell.id" [items]="options"/>
     </td>
   </ng-container>
   <tr *matHeaderRowDef="displayedColumns; sticky:true" class="mat-header-row" mat-header-row></tr>

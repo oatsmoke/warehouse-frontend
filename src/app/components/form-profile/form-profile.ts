@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import {ProfileService, ProfileType} from '../../services/profile';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
 import {SnackBarService} from '../../services/snack-bar';
 import {take} from 'rxjs';
+import {QueryParams} from '../../services/list';
 
 @Component({
   selector: 'app-form-profile',
@@ -27,6 +28,7 @@ import {take} from 'rxjs';
 
 export class FormProfile implements OnInit {
   @Input() profile!: ProfileType
+  @Output() relist = new EventEmitter<void>()
   head = "Создание"
   categoryItems: CategoryType[] = []
   form: FormGroup
@@ -44,7 +46,17 @@ export class FormProfile implements OnInit {
     private contentStateService: ContentStateService,
     private snackBarService: SnackBarService
   ) {
-    this.categoryService.list().pipe(take(1)).subscribe({
+    const qp: QueryParams = {
+      WithDeleted: "false",
+      Search: "",
+      Ids: [],
+      SortColumn: "title",
+      SortOrder: "",
+      PaginationLimit: 0,
+      PaginationOffset: 0,
+    }
+
+    this.categoryService.list(qp).pipe(take(1)).subscribe({
       next: (data) => {
         this.categoryItems = data.list
       },
@@ -55,17 +67,18 @@ export class FormProfile implements OnInit {
     this.form = this.formBuilder.group({
       id: 0,
       title: this.title,
-      category: this.category
+      category_id: this.category
     })
   }
 
   ngOnInit() {
     if (this.contentStateService.content() === State.Update) {
+      console.log(this.profile);
       this.head = "Изменение"
       this.form.setValue({
         id: this.profile.id,
         title: this.profile.title,
-        category: this.profile.category.id
+        category_id: this.profile.category.id
       })
     }
   }
@@ -81,6 +94,7 @@ export class FormProfile implements OnInit {
         this.profileService.create(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Профиль добавлен!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {
@@ -91,6 +105,7 @@ export class FormProfile implements OnInit {
         this.profileService.update(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Профиль обновлен!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {

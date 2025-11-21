@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -24,6 +24,7 @@ import {take} from 'rxjs';
 
 export class FormDepartment implements OnInit {
   @Input() department!: DepartmentType
+  @Output() relist = new EventEmitter<void>()
   head = "Создание"
   form: FormGroup
   title = new FormControl("", [
@@ -65,6 +66,7 @@ export class FormDepartment implements OnInit {
         this.departmentService.create(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Отдел добавлен!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {
@@ -75,6 +77,7 @@ export class FormDepartment implements OnInit {
         this.departmentService.update(this.form.value).pipe(take(1)).subscribe({
           next: () => {
             this.snackBarService.success("Отдел обновлен!")
+            this.relist.emit()
             this.cancel()
           },
           error: () => {

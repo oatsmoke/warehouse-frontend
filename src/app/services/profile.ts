@@ -3,10 +3,12 @@ import {CategoryType} from './category';
 import {TableColumnsType} from '../components/table/table';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {ListService, QueryParams} from './list';
 
 export interface ProfileType {
   id: number
   title: string
+  category_id: number
   category: CategoryType
   deleted_at: string
 }
@@ -41,10 +43,14 @@ const urlProfiles = "/api/profiles"
 })
 
 export class ProfileService {
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private listService: ListService
+  ) {
   }
 
   create(item: ProfileType) {
+    console.log(item);
     const url = new URL(urlProfiles, environment.apiUrl)
     return this.httpClient.post<void>(url.toString(), item)
   }
@@ -69,9 +75,8 @@ export class ProfileService {
     return this.httpClient.put<void>(url.toString(), "")
   }
 
-  list() {
-    const url = new URL(urlProfiles, environment.apiUrl)
-    url.searchParams.set("deleted", "true")
+  list(qp: QueryParams) {
+    const url = this.listService.buildQuery(new URL(urlProfiles, environment.apiUrl), qp)
     return this.httpClient.get<ProfileList>(url.toString())
   }
 }

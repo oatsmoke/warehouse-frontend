@@ -14,7 +14,7 @@ import {ContentStateService, StateDefault} from '../../services/content-state';
 })
 export class FormConfirm {
   @Input() id!: number;
-  @Output() confirm = new EventEmitter<number>();
+  @Output() confirm = new EventEmitter<number>()
 
   constructor(private contentStateService: ContentStateService) {
   }

@@ -8,6 +8,7 @@ import {FormConfirm} from '../form-confirm/form-confirm';
 import {FormEmpty} from '../form-empty/form-empty';
 import {take} from 'rxjs';
 import {SnackBarService} from '../../services/snack-bar';
+import {QueryParams} from '../../services/list';
 
 @Component({
   selector: 'app-list-departments',
@@ -70,6 +71,7 @@ export class ListDepartments {
     this.departmentService.delete(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Отдел удален!")
+        this.list()
       },
       error: () => {
       }
@@ -80,6 +82,7 @@ export class ListDepartments {
     this.departmentService.restore(id).pipe(take(1)).subscribe({
       next: _ => {
         this.snackBarService.success("Отдел восстановлен!")
+        this.list()
       },
       error: () => {
       }
@@ -87,7 +90,17 @@ export class ListDepartments {
   }
 
   list() {
-    this.departmentService.list().pipe(take(1)).subscribe({
+    const qp: QueryParams = {
+      WithDeleted: "true",
+      Search: "",
+      Ids: [],
+      SortColumn: "",
+      SortOrder: "",
+      PaginationLimit: 0,
+      PaginationOffset: 0,
+    }
+
+    this.departmentService.list(qp).pipe(take(1)).subscribe({
       next: (data) => {
         this.departmentItems = data.list
       },

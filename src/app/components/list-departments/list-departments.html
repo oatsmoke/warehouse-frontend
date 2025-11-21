@@ -1,16 +1,16 @@
 @switch (content()) {
   @case (State.List) {
-    @if (departmentItems.length > 0) {
+    @if (departmentItems) {
       <app-table [columns]="departmentColumns" [items]="departmentItems" [options]="departmentOption"/>
     } @else {
       <app-form-empty/>
     }
   }
   @case (State.Create) {
-    <app-form-department/>
+    <app-form-department (relist)="list()"/>
   }
   @case (State.Update) {
-    <app-form-department [department]="department"/>
+    <app-form-department (relist)="list()" [department]="department"/>
   }
   @case (State.Confirm) {
     <app-form-confirm (confirm)="delete($event)" [id]="id"/>
