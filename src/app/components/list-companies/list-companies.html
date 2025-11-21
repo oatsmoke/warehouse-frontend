@@ -1,6 +1,6 @@
 @switch (content()) {
   @case (State.List) {
-    @if (companyItems) {
+    @if (companyItems && companyItems.length) {
       <app-table [columns]="companyColumns" [items]="companyItems" [options]="companyOption"/>
     } @else {
       <app-form-empty/>

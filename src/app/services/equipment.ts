@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ProfileType} from './profile';
 import {TableColumnsType} from '../components/table/table';
+import {environment} from '../../environments/environment';
+import {ListService, QueryParams} from './list';
+import {HttpClient} from '@angular/common/http';
 
 export interface EquipmentType {
   id: number
@@ -8,6 +11,11 @@ export interface EquipmentType {
   profile_id: number
   profile: ProfileType
   deleted_at: string
+}
+
+export interface EquipmentList {
+  list: EquipmentType[]
+  total: number
 }
 
 export const EquipmentColumnsData: TableColumnsType[] = [
@@ -28,142 +36,47 @@ export const EquipmentColumnsData: TableColumnsType[] = [
   }
 ]
 
-export const EquipmentData: EquipmentType[] = [
-  {
-    id: 1,
-    serial_number: "123qaz",
-    profile_id: 1,
-    profile: {
-      id: 1,
-      title: "dir-300",
-      category_id: 1,
-      category: {
-        id: 1,
-        title: "router",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 2,
-    serial_number: "123wsx",
-    profile_id: 1,
-    profile: {
-      id: 1,
-      title: "dir-300",
-      category_id: 1,
-      category: {
-        id: 1,
-        title: "router",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 3,
-    serial_number: "123edc",
-    profile_id: 1,
-    profile: {
-      id: 1,
-      title: "dir-300",
-      category_id: 1,
-      category: {
-        id: 1,
-        title: "router",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 4,
-    serial_number: "123rfv",
-    profile_id: 1,
-    profile: {
-      id: 1,
-      title: "dir-300",
-      category_id: 1,
-      category: {
-        id: 1,
-        title: "router",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 5,
-    serial_number: "123tgb",
-    profile_id: 1,
-    profile: {
-      id: 1,
-      title: "dir-300",
-      category_id: 1,
-      category: {
-        id: 1,
-        title: "router",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 7,
-    serial_number: "111qqq",
-    profile_id: 3,
-    profile: {
-      id: 3,
-      title: "conax",
-      category_id: 2,
-      category: {
-        id: 2,
-        title: "CAM-module",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  },
-  {
-    id: 8,
-    serial_number: "222www",
-    profile_id: 3,
-    profile: {
-      id: 3,
-      title: "conax",
-      category_id: 2,
-      category: {
-        id: 2,
-        title: "CAM-module",
-        deleted_at: ""
-      },
-      deleted_at: ""
-    },
-    deleted_at: ""
-  }
-]
+const urlEquipment = "/api/equipments"
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class EquipmentService {
-  details(id: number) {
-    console.log('Подробнее об оборудовании', id)
+  constructor(
+    private httpClient: HttpClient,
+    private listService: ListService
+  ) {
   }
 
-  update(id: number) {
-    console.log('Редактировать оборудование', id)
+  create(item: EquipmentType) {
+    console.log(item);
+    const url = new URL(urlEquipment, environment.apiUrl)
+    return this.httpClient.post<void>(url.toString(), item)
+  }
+
+  read(id: number) {
+    const url = new URL(`${urlEquipment}/${id}`, environment.apiUrl)
+    return this.httpClient.get<EquipmentType>(url.toString())
+  }
+
+  update(item: ProfileType) {
+    const url = new URL(`${urlEquipment}/${item.id}`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), item)
   }
 
   delete(id: number) {
-    console.log('Удалить оборудование', id)
+    const url = new URL(`${urlEquipment}/${id}`, environment.apiUrl)
+    return this.httpClient.delete<void>(url.toString())
+  }
+
+  restore(id: number) {
+    const url = new URL(`${urlEquipment}/${id}/restore`, environment.apiUrl)
+    return this.httpClient.put<void>(url.toString(), "")
+  }
+
+  list(qp: QueryParams) {
+    const url = this.listService.buildQuery(new URL(urlEquipment, environment.apiUrl), qp)
+    return this.httpClient.get<EquipmentList>(url.toString())
   }
 }
