@@ -13,6 +13,7 @@ export interface QueryParams {
 @Injectable({
   providedIn: 'root'
 })
+
 export class ListService {
   buildQuery(url: URL, qp: QueryParams) {
     if (qp.WithDeleted) {

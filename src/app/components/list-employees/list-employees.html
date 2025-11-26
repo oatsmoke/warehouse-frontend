@@ -1,0 +1,18 @@
+@switch (content()) {
+  @case (State.List) {
+    @if (employeeItems && employeeItems.length) {
+      <app-table [columns]="employeeColumns" [items]="employeeItems" [options]="employeeOption"/>
+    } @else {
+      <app-form-empty/>
+    }
+  }
+  @case (State.Create) {
+    <app-form-employee (relist)="list()"/>
+  }
+  @case (State.Update) {
+    <app-form-employee (relist)="list()" [employee]="employee"/>
+  }
+  @case (State.Confirm) {
+    <app-form-confirm (confirm)="delete($event)" [id]="id"/>
+  }
+}

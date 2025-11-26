@@ -4,6 +4,7 @@ import {ListCategories} from '../../components/list-categories/list-categories';
 import {ListProfiles} from '../../components/list-profiles/list-profiles';
 import {ListCompanies} from '../../components/list-companies/list-companies';
 import {ListDepartments} from '../../components/list-departments/list-departments';
+import {ListEmployees} from '../../components/list-employees/list-employees';
 
 @Component({
   selector: 'app-control',
@@ -12,6 +13,7 @@ import {ListDepartments} from '../../components/list-departments/list-department
     ListProfiles,
     ListCompanies,
     ListDepartments,
+    ListEmployees,
   ],
   templateUrl: './control.html',
   styleUrl: './control.css'

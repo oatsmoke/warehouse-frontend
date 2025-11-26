@@ -29,9 +29,9 @@ export class FormCategory implements OnInit {
   form: FormGroup
   title = new FormControl("", [
     Validators.required,
-    Validators.pattern("[0-9а-яА-Яa-zA-Z ]+"),
+    Validators.pattern(/^[A-Za-zА-Яа-яЁё0-9 -]+$/),
     Validators.minLength(3),
-    Validators.maxLength(50)]);
+    Validators.maxLength(50)])
 
   constructor(
     private formBuilder: FormBuilder,

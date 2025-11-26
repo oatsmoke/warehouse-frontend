@@ -34,7 +34,7 @@ export class FormEquipment implements OnInit {
   form: FormGroup
   serial_number = new FormControl("", [
     Validators.required,
-    Validators.pattern("[0-9а-яА-Яa-zA-Z ]+"),
+    Validators.pattern(/^[0-9A-Za-z]+$/),
     Validators.minLength(3),
     Validators.maxLength(50)])
   profile = new FormControl("", Validators.required)

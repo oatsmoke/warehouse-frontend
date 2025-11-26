@@ -4,70 +4,59 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {CategoryService, CategoryType} from '../../services/category';
-import {ProfileService, ProfileType} from '../../services/profile';
+import {EmployeeService, EmployeeType} from '../../services/employee';
 import {ContentStateService, State, StateDefault} from '../../services/content-state';
 import {SnackBarService} from '../../services/snack-bar';
 import {take} from 'rxjs';
-import {QueryParams} from '../../services/list';
 
 @Component({
-  selector: 'app-form-profile',
+  selector: 'app-form-employee',
   imports: [
     MatCardModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
-    MatSelectModule,
   ],
-  templateUrl: './form-profile.html',
-  styleUrl: './form-profile.css'
+  templateUrl: './form-employee.html',
+  styleUrl: './form-employee.css'
 })
 
-export class FormProfile implements OnInit {
-  @Input() profile!: ProfileType
+export class FormEmployee implements OnInit {
+  @Input() employee!: EmployeeType
   @Output() relist = new EventEmitter<void>()
   head = "Создание"
-  categoryItems: CategoryType[] = []
   form: FormGroup
-  title = new FormControl("", [
+  last_name = new FormControl("", [
     Validators.required,
-    Validators.pattern(/^[A-Za-zА-Яа-яЁё0-9 -]+$/),
+    Validators.pattern(/^[А-Яа-яЁё]+$/),
     Validators.minLength(3),
     Validators.maxLength(50)])
-  category = new FormControl("", Validators.required)
+  first_name = new FormControl("", [
+    Validators.required,
+    Validators.pattern(/^[А-Яа-яЁё]+$/),
+    Validators.minLength(3),
+    Validators.maxLength(50)])
+  middle_name = new FormControl("", [
+    Validators.pattern(/^[А-Яа-яЁё]+$/),
+    Validators.minLength(3),
+    Validators.maxLength(50)])
+  phone = new FormControl("", [
+    Validators.required,
+    Validators.pattern(/^(\+7|8)\d{10}$/)])
 
   constructor(
     private formBuilder: FormBuilder,
-    private profileService: ProfileService,
-    private categoryService: CategoryService,
+    private employeeService: EmployeeService,
     private contentStateService: ContentStateService,
     private snackBarService: SnackBarService
   ) {
-    const qp: QueryParams = {
-      WithDeleted: "false",
-      Search: "",
-      Ids: [],
-      SortColumn: "title",
-      SortOrder: "",
-      PaginationLimit: 0,
-      PaginationOffset: 0,
-    }
-
-    this.categoryService.list(qp).pipe(take(1)).subscribe({
-      next: (data) => {
-        this.categoryItems = data.list
-      },
-      error: () => {
-      }
-    })
-
     this.form = this.formBuilder.group({
       id: 0,
-      title: this.title,
-      category_id: this.category
+      last_name: this.last_name,
+      first_name: this.first_name,
+      middle_name: this.middle_name,
+      phone: this.phone
     })
   }
 
@@ -75,9 +64,11 @@ export class FormProfile implements OnInit {
     if (this.contentStateService.content() === State.Update) {
       this.head = "Изменение"
       this.form.setValue({
-        id: this.profile.id,
-        title: this.profile.title,
-        category_id: this.profile.category.id
+        id: this.employee.id,
+        last_name: this.employee.last_name,
+        first_name: this.employee.first_name,
+        middle_name: this.employee.middle_name,
+        phone: this.employee.phone
       })
     }
   }
@@ -90,9 +81,9 @@ export class FormProfile implements OnInit {
 
     switch (this.contentStateService.content()) {
       case State.Create:
-        this.profileService.create(this.form.value).pipe(take(1)).subscribe({
+        this.employeeService.create(this.form.value).pipe(take(1)).subscribe({
           next: () => {
-            this.snackBarService.success("Профиль добавлен!")
+            this.snackBarService.success("Сотрудник добавлен!")
             this.relist.emit()
             this.cancel()
           },
@@ -101,9 +92,9 @@ export class FormProfile implements OnInit {
         })
         break
       case State.Update:
-        this.profileService.update(this.form.value).pipe(take(1)).subscribe({
+        this.employeeService.update(this.form.value).pipe(take(1)).subscribe({
           next: () => {
-            this.snackBarService.success("Профиль обновлен!")
+            this.snackBarService.success("Сотрудник обновлен!")
             this.relist.emit()
             this.cancel()
           },

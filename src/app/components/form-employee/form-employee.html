@@ -1,0 +1,82 @@
+<mat-card appearance="raised">
+  <mat-card-header>
+    <mat-card-title>{{ head }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <form [formGroup]="form">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Фамилия</mat-label>
+          <input [formControl]="last_name" matInput>
+          @if (last_name.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+          @if (last_name.hasError('pattern')) {
+            <mat-error>Недопустимые символы!</mat-error>
+          }
+          @if (last_name.hasError('minlength')) {
+            <mat-error>Минимум 3 символа!</mat-error>
+          }
+          @if (last_name.hasError('maxlength')) {
+            <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Имя</mat-label>
+          <input [formControl]="first_name" matInput>
+          @if (first_name.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+          @if (first_name.hasError('pattern')) {
+            <mat-error>Недопустимые символы!</mat-error>
+          }
+          @if (first_name.hasError('minlength')) {
+            <mat-error>Минимум 3 символа!</mat-error>
+          }
+          @if (first_name.hasError('maxlength')) {
+            <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Отчество</mat-label>
+          <input [formControl]="middle_name" matInput>
+          @if (middle_name.hasError('pattern')) {
+            <mat-error>Недопустимые символы!</mat-error>
+          }
+          @if (middle_name.hasError('minlength')) {
+            <mat-error>Минимум 3 символа!</mat-error>
+          }
+          @if (middle_name.hasError('maxlength')) {
+            <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Телефон</mat-label>
+          <input [formControl]="phone" matInput>
+          @if (phone.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+          @if (phone.hasError('pattern')) {
+            <mat-error>Недопустимые символы!</mat-error>
+          }
+          @if (phone.hasError('minlength')) {
+            <mat-error>Минимум 3 символа!</mat-error>
+          }
+          @if (phone.hasError('maxlength')) {
+            <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p class="buttons">
+        <button (click)="ok()" [disabled]="form.invalid" matButton="tonal">OK</button>
+        <button (click)="cancel()" matButton="tonal">Отмена</button>
+      </p>
+    </form>
+  </mat-card-actions>
+</mat-card>
