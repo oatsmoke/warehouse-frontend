@@ -58,7 +58,6 @@ export class EmployeeService {
   }
 
   create(item: EmployeeType) {
-    console.log(item);
     const url = new URL(urlEmployees, environment.apiUrl)
     return this.httpClient.post<void>(url.toString(), item)
   }

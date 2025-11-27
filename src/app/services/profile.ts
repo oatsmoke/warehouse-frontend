@@ -50,7 +50,6 @@ export class ProfileService {
   }
 
   create(item: ProfileType) {
-    console.log(item);
     const url = new URL(urlProfiles, environment.apiUrl)
     return this.httpClient.post<void>(url.toString(), item)
   }

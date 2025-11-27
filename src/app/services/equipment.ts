@@ -50,7 +50,6 @@ export class EquipmentService {
   }
 
   create(item: EquipmentType) {
-    console.log(item);
     const url = new URL(urlEquipment, environment.apiUrl)
     return this.httpClient.post<void>(url.toString(), item)
   }

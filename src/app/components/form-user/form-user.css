@@ -1,0 +1,14 @@
+mat-card {
+  margin: 30px auto;
+  max-width: 300px;
+}
+
+mat-card-header, mat-card-actions {
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
