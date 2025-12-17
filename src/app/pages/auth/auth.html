@@ -1,0 +1,30 @@
+<mat-card appearance="raised">
+  <mat-card-header>
+    <mat-card-title>Вход</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <form [formGroup]="form">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Логин</mat-label>
+          <input [formControl]="username" matInput>
+          @if (username.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Пароль</mat-label>
+          <input [formControl]="password" matInput type="password">
+          @if (password.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p class="buttons">
+        <button (click)="ok()" [disabled]="form.invalid" matButton="tonal">Войти</button>
+      </p>
+    </form>
+  </mat-card-actions>
+</mat-card>

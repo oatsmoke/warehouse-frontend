@@ -12,6 +12,7 @@ export interface UserType {
   enabled: string
   last_login_at: string
   employee_id: number
+  employee_name: string
   employee: EmployeeType
 }
 
@@ -49,7 +50,7 @@ export const UserColumnsData: TableColumnsType[] = [
   {
     column_def: "employee",
     header: "Сотрудник",
-    cell: (cell: UserType) => `${cell.employee.last_name} ${cell.employee.first_name} ${cell.employee.last_name}`
+    cell: (cell: UserType) => `${cell.employee_name}`
   }
 ]
 

@@ -3,14 +3,14 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from '@angular/material/icon';
-import {MenuLeft} from '../menu-left/menu-left';
+import {MenuLeft} from '../../components/menu-left/menu-left';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {filter} from 'rxjs';
 import {MatMenuModule} from '@angular/material/menu';
 import {MenuLeftData} from '../../services/menu-left';
-import {ToolbarDepartment} from '../toolbar-department/toolbar-department';
-import {ToolbarContract} from '../toolbar-contract/toolbar-contract';
-import {ToolbarControl} from '../toolbar-control/toolbar-control';
+import {ToolbarDepartment} from '../../components/toolbar-department/toolbar-department';
+import {ToolbarContract} from '../../components/toolbar-contract/toolbar-contract';
+import {ToolbarControl} from '../../components/toolbar-control/toolbar-control';
 import {WebSocketService} from '../../services/web-socket';
 
 @Component({
@@ -36,7 +36,7 @@ export class Shell {
   url!: string
   param!: string
   id!: string
-  protected readonly title = signal("")
+  title = signal("")
 
   constructor(
     private router: Router,
@@ -53,8 +53,6 @@ export class Shell {
         )
         if (title) {
           this.title.set(title.text)
-        } else {
-          this.router.navigate(['/equipment/department/0']).then()
         }
         this.toolBar = params[0]
         this.url = "/" + params[0]
