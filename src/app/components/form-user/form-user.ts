@@ -54,13 +54,15 @@ export class FormUser implements OnInit {
     private snackBarService: SnackBarService
   ) {
     const qp: QueryParams = {
-      WithDeleted: "false",
-      Search: "",
-      Ids: [],
-      SortColumn: "title",
-      SortOrder: "",
-      PaginationLimit: 0,
-      PaginationOffset: 0,
+      with_deleted: "false",
+      search: "",
+      ids: [],
+      sort_column: "title",
+      sort_order: "",
+      pagination_limit: 0,
+      pagination_offset: 0,
+      param: "",
+      param_id: 0
     }
 
     this.roleService.list().pipe(take(1)).subscribe({

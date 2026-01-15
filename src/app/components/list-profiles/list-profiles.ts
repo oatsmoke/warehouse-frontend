@@ -91,13 +91,15 @@ export class ListProfiles {
 
   list() {
     const qp: QueryParams = {
-      WithDeleted: "true",
-      Search: "",
-      Ids: [],
-      SortColumn: "",
-      SortOrder: "",
-      PaginationLimit: 0,
-      PaginationOffset: 0,
+      with_deleted: "true",
+      search: "",
+      ids: [],
+      sort_column: "",
+      sort_order: "",
+      pagination_limit: 0,
+      pagination_offset: 0,
+      param: "",
+      param_id: 0
     }
 
     this.profileService.list(qp).pipe(take(1)).subscribe({

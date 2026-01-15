@@ -1,0 +1,72 @@
+<mat-card appearance="raised">
+  <mat-card-header>
+    <mat-card-title>{{ head }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <form [formGroup]="form">
+      <p>
+        <mat-form-field>
+          <mat-label>Дата</mat-label>
+          <input [matDatepicker]="picker" formControlName="date" matInput>
+          <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (form.controls.date.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Компания</mat-label>
+          <mat-select formControlName="company_id">
+            @for (item of companyItems; track item) {
+              <mat-option [value]="item.id">{{ item.title }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.company_id.hasError('min')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Профиль</mat-label>
+          <mat-select formControlName="profile_id">
+            @for (item of profileItems; track item) {
+              <mat-option [value]="item.id">{{ item.title }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.profile_id.hasError('min')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Серийный номер</mat-label>
+          <mat-chip-grid #reactiveChipGrid formControlName="serial_numbers">
+            @for (sn of serialNumbers(); track sn) {
+              <mat-chip-row (removed)="delSerialNumber(sn)">
+                {{ sn }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input
+            (matChipInputTokenEnd)="addSerialNumber($event)"
+            [matChipInputFor]="reactiveChipGrid"
+          />
+          @if (form.controls.serial_numbers.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p class="buttons">
+        <button (click)="ok()" [disabled]="form.invalid" matButton="tonal">OK</button>
+        <button (click)="cancel()" matButton="tonal">Отмена</button>
+      </p>
+    </form>
+  </mat-card-actions>
+</mat-card>

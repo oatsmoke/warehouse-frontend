@@ -4,7 +4,7 @@
 </button>
 <mat-menu #menu="matMenu">
   <button [disabled]="id=='0'" [routerLink]="['/equipment', 'department', '0']" mat-menu-item>Склад</button>
-  @for (item of items; track item) {
+  @for (item of departmentItems; track item) {
     <button [disabled]="String(item.id)==id" [routerLink]="['/equipment', 'department', item.id]" mat-menu-item>
       {{ item.title }}
     </button>

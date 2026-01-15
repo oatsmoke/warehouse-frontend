@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ListEquipments} from '../../components/list-equipments/list-equipments';
+import {EquipmentService} from '../../services/equipment';
 
 @Component({
   selector: 'app-equipment',
@@ -12,13 +13,13 @@ import {ListEquipments} from '../../components/list-equipments/list-equipments';
 })
 
 export class Equipment {
-  param!: string
-  id!: number
-
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private equipmentService: EquipmentService,
+    private route: ActivatedRoute
+  ) {
     this.route.paramMap.subscribe(param => {
-      this.param = param.get('param') || ""
-      this.id = Number(param.get('id')) || 0
+      this.equipmentService.param.set(param.get('param') || "")
+      this.equipmentService.paramId.set(Number(param.get('id')) || 0)
     })
   }
 }

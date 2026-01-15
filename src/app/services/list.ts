@@ -1,13 +1,15 @@
 import {Injectable} from '@angular/core';
 
 export interface QueryParams {
-  WithDeleted: string
-  Search: string
-  Ids: number[]
-  SortColumn: string
-  SortOrder: string
-  PaginationLimit: number
-  PaginationOffset: number
+  with_deleted: string
+  search: string
+  ids: number[]
+  sort_column: string
+  sort_order: string
+  pagination_limit: number
+  pagination_offset: number
+  param: string
+  param_id: number
 }
 
 @Injectable({
@@ -16,34 +18,42 @@ export interface QueryParams {
 
 export class ListService {
   buildQuery(url: URL, qp: QueryParams) {
-    if (qp.WithDeleted) {
-      url.searchParams.set("deleted", qp.WithDeleted)
+    if (qp.with_deleted) {
+      url.searchParams.set("deleted", qp.with_deleted);
     }
 
-    if (qp.Search) {
-      url.searchParams.set("search", qp.Search)
+    if (qp.search) {
+      url.searchParams.set("search", qp.search)
     }
 
-    if (qp.Ids.length > 0) {
-      qp.Ids.forEach((id: number) => {
+    if (qp.ids.length > 0) {
+      qp.ids.forEach((id: number) => {
         url.searchParams.set("ids", id.toString())
       })
     }
 
-    if (qp.SortColumn) {
-      url.searchParams.set("sort_by", qp.SortColumn)
+    if (qp.sort_column) {
+      url.searchParams.set("sort_by", qp.sort_column)
     }
 
-    if (qp.SortOrder) {
-      url.searchParams.set("order", qp.SortOrder)
+    if (qp.sort_order) {
+      url.searchParams.set("order", qp.sort_order)
     }
 
-    if (qp.PaginationLimit) {
-      url.searchParams.set("limit", qp.PaginationLimit.toString())
+    if (qp.pagination_limit) {
+      url.searchParams.set("limit", qp.pagination_limit.toString())
     }
 
-    if (qp.PaginationOffset) {
-      url.searchParams.set("offset", qp.PaginationOffset.toString())
+    if (qp.pagination_offset) {
+      url.searchParams.set("offset", qp.pagination_offset.toString())
+    }
+
+    if (qp.param) {
+      url.searchParams.set("param", qp.param)
+    }
+
+    if (qp.param_id) {
+      url.searchParams.set("param_id", qp.param_id.toString())
     }
 
     return url

@@ -7,10 +7,10 @@
     }
   }
   @case (State.Create) {
-    <app-form-equipment (relist)="list()"/>
+    <app-form-equipment-create (relist)="list()"/>
   }
   @case (State.Update) {
-    <app-form-equipment (relist)="list()" [equipment]="equipment"/>
+    <app-form-equipment-update (relist)="list()" [equipment]="equipment"/>
   }
   @case (State.Confirm) {
     <app-form-confirm (confirm)="delete($event)" [id]="id"/>

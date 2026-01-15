@@ -1,0 +1,57 @@
+<mat-card appearance="raised">
+  <mat-card-header>
+    <mat-card-title>{{ head }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <form [formGroup]="form">
+      <p>
+        <mat-form-field>
+          <mat-label>Компания</mat-label>
+          <mat-select formControlName="company_id">
+            @for (item of companyItems; track item) {
+              <mat-option [value]="item.id">{{ item.title }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.company_id.hasError('min')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Профиль</mat-label>
+          <mat-select formControlName="profile_id">
+            @for (item of profileItems; track item) {
+              <mat-option [value]="item.id">{{ item.title }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.profile_id.hasError('min')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Название</mat-label>
+          <input formControlName="serial_number" matInput>
+          @if (form.controls.serial_number.hasError('required')) {
+            <mat-error>Необходимо заполнить!</mat-error>
+          }
+          @if (form.controls.serial_number.hasError('pattern')) {
+            <mat-error>Недопустимые символы!</mat-error>
+          }
+          @if (form.controls.serial_number.hasError('minlength')) {
+            <mat-error>Минимум 3 символа!</mat-error>
+          }
+          @if (form.controls.serial_number.hasError('maxlength')) {
+            <mat-error>Максимум 50 символов!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p class="buttons">
+        <button (click)="ok()" [disabled]="form.invalid" matButton="tonal">OK</button>
+        <button (click)="cancel()" matButton="tonal">Отмена</button>
+      </p>
+    </form>
+  </mat-card-actions>
+</mat-card>

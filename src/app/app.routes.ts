@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import {authGuard} from './auth-guard';
+import {equipmentResolver} from './resolvers/equipment-resolver';
 
 export const routes: Routes = [
   {
@@ -8,10 +9,10 @@ export const routes: Routes = [
   },
   {
     path: "", loadComponent: () => import("./pages/shell/shell").then(m => m.Shell),
-
     children: [
       {
         path: "equipment/:param/:id",
+        resolve: {equipmentResolver},
         loadComponent: () => import("./pages/equipment/equipment").then(m => m.Equipment)
       },
       {

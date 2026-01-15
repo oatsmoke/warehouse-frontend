@@ -2,8 +2,11 @@ import {Component, Input, OnChanges, signal, SimpleChanges} from '@angular/core'
 import {Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
-import {MenuDepartmentData, MenuDepartmentType} from '../../services/menu-department';
+import {MenuDepartmentType} from '../../services/menu-department';
 import {MatIconModule} from '@angular/material/icon';
+import {QueryParams} from '../../services/list';
+import {take} from 'rxjs';
+import {DepartmentService} from '../../services/department';
 
 @Component({
   selector: 'app-menu-department',
@@ -21,12 +24,15 @@ export class MenuDepartment implements OnChanges {
   @Input() url!: string
   @Input() param!: string
   @Input() id!: string
-  items: MenuDepartmentType[]
+  departmentItems: MenuDepartmentType[] = []
   protected readonly department = signal("")
-  protected readonly String = String;
+  protected readonly String = String
 
-  constructor(private router: Router) {
-    this.items = MenuDepartmentData
+  constructor(
+    private router: Router,
+    private departmentService: DepartmentService
+  ) {
+    this.list()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -34,7 +40,7 @@ export class MenuDepartment implements OnChanges {
       if (this.id == "0") {
         this.department.set("Склад")
       } else {
-        const item = this.items.find(item => String(item.id) == this.id)
+        const item = this.departmentItems.find(item => String(item.id) == this.id)
         if (item) {
           this.department.set(item.title)
         } else {
@@ -42,5 +48,27 @@ export class MenuDepartment implements OnChanges {
         }
       }
     }
+  }
+
+  list() {
+    const qp: QueryParams = {
+      with_deleted: "false",
+      search: "",
+      ids: [],
+      sort_column: "",
+      sort_order: "",
+      pagination_limit: 0,
+      pagination_offset: 0,
+      param: "",
+      param_id: 0
+    }
+
+    this.departmentService.list(qp).pipe(take(1)).subscribe({
+      next: (data) => {
+        this.departmentItems = data.list
+      },
+      error: () => {
+      }
+    })
   }
 }
