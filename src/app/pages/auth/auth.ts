@@ -38,10 +38,8 @@ export class Auth {
   }
 
   ok() {
-    console.log(this.form.value)
     this.authService.login(this.form.value).pipe(take(1)).subscribe({
         next: data => {
-          console.log(data)
           this.authService.setUser(data)
           this.router.navigate(["/equipment/department/0"]).then()
         },

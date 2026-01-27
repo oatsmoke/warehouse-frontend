@@ -1,4 +1,4 @@
-<button [matMenuTriggerFor]="options" mat-icon-button>
+<button (click)="$event.stopPropagation()" [matMenuTriggerFor]="options" mat-icon-button [disabled]="disabled">
   <mat-icon>expand_circle_down</mat-icon>
 </button>
 <mat-menu #options="matMenu">

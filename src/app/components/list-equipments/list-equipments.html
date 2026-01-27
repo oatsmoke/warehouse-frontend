@@ -1,7 +1,7 @@
 @switch (content()) {
   @case (State.List) {
     @if (equipmentItems && equipmentItems.length) {
-      <app-table [columns]="equipmentColumns" [items]="equipmentItems" [options]="equipmentOption"/>
+      <app-table [columns]="equipmentColumns" [items]="equipmentItems" [options]="equipmentOption" [pickOn]="true"/>
     } @else {
       <app-form-empty/>
     }

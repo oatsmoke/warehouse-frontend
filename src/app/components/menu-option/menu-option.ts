@@ -24,4 +24,5 @@ export class MenuOption {
   @Input() items: MenuOptionType[] = []
   @Input() id!: number
   @Input() deleted!: string
+  @Input() disabled = false;
 }

@@ -57,7 +57,6 @@ export class ListEquipments implements OnInit {
   ngOnInit() {
     this.activatedRoute.data.subscribe(({equipmentResolver}) => {
       this.equipmentItems = equipmentResolver.equipments.list
-      console.log(this.equipmentItems)
     })
   }
 

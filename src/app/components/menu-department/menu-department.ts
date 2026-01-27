@@ -7,6 +7,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {QueryParams} from '../../services/list';
 import {take} from 'rxjs';
 import {DepartmentService} from '../../services/department';
+import {ContentStateService, State} from '../../services/content-state';
 
 @Component({
   selector: 'app-menu-department',
@@ -30,13 +31,15 @@ export class MenuDepartment implements OnChanges {
 
   constructor(
     private router: Router,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private contentStateService: ContentStateService
   ) {
     this.list()
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['id']) {
+      this.contentStateService.toggleContent(State.List)
       if (this.id == "0") {
         this.department.set("Склад")
       } else {

@@ -26,7 +26,6 @@ export const equipmentResolver: ResolveFn<{
   // const equipmentService=inject(EquipmentService)
   const param = route.paramMap.get('param')!
   const id = Number(route.paramMap.get('id')!)
-  console.log( param,id)
 
   const qp2: QueryParams = {
     with_deleted: "false",

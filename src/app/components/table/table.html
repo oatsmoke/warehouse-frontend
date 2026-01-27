@@ -13,9 +13,12 @@
     <th *matHeaderCellDef class="options" mat-header-cell>
     </th>
     <td *matCellDef="let cell" mat-cell>
-      <app-menu-option [deleted]="cell.deleted_at || cell.enabled" [id]="cell.id" [items]="options"/>
+      <app-menu-option [deleted]="cell.deleted_at || cell.enabled" [disabled]="pickItems.includes(cell.id)" [id]="cell.id"
+                       [items]="options"/>
     </td>
   </ng-container>
   <tr *matHeaderRowDef="displayedColumns; sticky:true" class="mat-header-row" mat-header-row></tr>
-  <tr *matRowDef="let row; columns:displayedColumns" class="tr-hover" mat-row></tr>
+  <tr (click)="pick(row.id)" *matRowDef="let row; columns:displayedColumns"
+      [class.tr-hover]="!pickItems.includes(row.id)"
+      [class.tr-pick]="pickItems.includes(row.id)" mat-row></tr>
 </table>

@@ -21,12 +21,21 @@ export interface TableColumnsType {
 })
 
 export class Table implements OnInit {
-  @Input() columns!: TableColumnsType[]
-  @Input() items!: any[]
-  @Input() options!: MenuOptionType[]
-  displayedColumns!: string[]
+  @Input() columns: TableColumnsType[] = []
+  @Input() items: any[] = []
+  @Input() options: MenuOptionType[] = []
+  @Input() pickOn: boolean = false
+  displayedColumns: string[] = []
+  pickItems: number[] = []
 
   ngOnInit(): void {
-    this.displayedColumns = this.columns?.map(c => c.column_def).concat("options")
+    this.displayedColumns = this.columns.map(c => c.column_def).concat("options")
+  }
+
+  pick(id: number) {
+    if (this.pickOn) {
+      this.pickItems = this.pickItems.includes(id) ? this.pickItems.filter(n => n !== id) : [...this.pickItems, id]
+      console.log(this.pickItems)
+    }
   }
 }

@@ -7,8 +7,13 @@ table {
 }
 
 .tr-hover:hover {
+  cursor: pointer;
   background-color: #f7ebe3;
-  /*ffdcc7*/
+}
+
+.tr-pick {
+  cursor: pointer;
+  background-color: #ffdcc7;
 }
 
 .mat-header-row {

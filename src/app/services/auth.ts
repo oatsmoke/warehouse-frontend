@@ -33,7 +33,6 @@ export class AuthService {
   }
 
   setUser(user: UserType) {
-    console.log(user)
     this.user.set(user)
   }
 
